@@ -3,10 +3,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Crucial for mobile responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>404 - Lost in Space</title>
     
-    <!-- Loading Tailwind CSS for layout and utility classes -->
+    <!-- Loading Tailwind CSS for adaptive layout -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Loading Google Fonts: Space Grotesk for a modern, geometric aesthetic -->
@@ -23,8 +24,14 @@
             font-family: 'Space Grotesk', sans-serif;
             background-color: var(--bg-color);
             margin: 0;
-            overflow: hidden; /* Prevent scrolling to keep it immersive */
+            /* Prevent scrolling and elastic bounce on mobile */
+            overflow: hidden; 
+            width: 100vw;
+            /* Fallback for older browsers, dvh for modern mobile browsers to handle address bars */
+            height: 100vh;
+            height: 100dvh;
             color: #ffffff;
+            overscroll-behavior: none;
         }
 
         /* Ambient animated background orbs */
@@ -32,59 +39,76 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.6;
-            animation: float 20s infinite ease-in-out alternate;
+            opacity: 0.5;
+            animation: drift 20s infinite ease-in-out alternate;
             z-index: 0;
+            /* Ensure orbs don't block pointer events */
+            pointer-events: none;
         }
 
         .orb-1 {
-            width: 400px;
-            height: 400px;
+            width: 50vmin; /* Responsive sizing based on viewport */
+            height: 50vmin;
             background: linear-gradient(135deg, #7c3aed, #db2777);
-            top: -100px;
-            left: -100px;
+            top: -10%;
+            left: -10%;
         }
 
         .orb-2 {
-            width: 500px;
-            height: 500px;
+            width: 60vmin;
+            height: 60vmin;
             background: linear-gradient(135deg, #2563eb, #06b6d4);
-            bottom: -150px;
-            right: -100px;
+            bottom: -15%;
+            right: -10%;
             animation-delay: -5s;
         }
         
         .orb-3 {
-            width: 300px;
-            height: 300px;
+            width: 40vmin;
+            height: 40vmin;
             background: linear-gradient(135deg, #10b981, #3b82f6);
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            opacity: 0.3;
+            opacity: 0.2;
             animation-duration: 25s;
         }
 
-        @keyframes float {
+        @keyframes drift {
             0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
+            33% { transform: translate(5vw, -5vh) scale(1.1); }
+            66% { transform: translate(-3vw, 3vh) scale(0.9); }
             100% { transform: translate(0, 0) scale(1); }
         }
 
-        /* 3D Perspective container for the card */
         .perspective-container {
             perspective: 1000px;
             z-index: 10;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            width: 100vw;
-            padding: 1.5rem;
+            height: 100%;
+            width: 100%;
+            padding: 1rem;
+            box-sizing: border-box;
         }
 
-        /* Glassmorphism card with 3D transform properties */
+        /* Continuous gentle float using CSS (safe for all devices) */
+        .floating-wrapper {
+            animation: gentle-float 6s infinite ease-in-out;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            /* Ensures 3D transform is passed down to the card */
+            transform-style: preserve-3d; 
+        }
+
+        @keyframes gentle-float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(16px);
@@ -93,9 +117,10 @@
             border-radius: 2rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             transform-style: preserve-3d;
-            transition: transform 0.1s ease;
+            transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
+            will-change: transform;
         }
 
         /* Subtle inner shine on the card */
@@ -109,6 +134,7 @@
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
             transform: skewX(-20deg);
             animation: shine 8s infinite;
+            pointer-events: none;
         }
 
         @keyframes shine {
@@ -142,68 +168,81 @@
     <!-- Main container enabling 3D perspective -->
     <div class="perspective-container" id="container">
         
-        <!-- The Glassmorphism Card -->
-        <div class="glass-card w-full max-w-2xl p-8 md:p-16 flex flex-col items-center justify-center text-center" id="card">
+        <!-- Separating the CSS float from the JS 3D rotation prevents conflicts -->
+        <div class="floating-wrapper w-full max-w-2xl">
             
-            <!-- 404 Number -->
-            <h1 class="parallax-element-heavy text-7xl md:text-9xl font-bold tracking-tighter mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-300 to-blue-400 text-glow">
-                404
-            </h1>
-            
-            <!-- Error Title -->
-            <h2 class="parallax-element text-2xl md:text-4xl font-semibold mb-6 text-white/90">
-                You've strayed into the void.
-            </h2>
-            
-            <!-- Error Description -->
-            <p class="parallax-element text-base md:text-lg text-white/60 mb-10 max-w-md mx-auto leading-relaxed">
-                The page you are looking for has been moved, deleted, or never existed in this dimension. Don't worry, even the best explorers get lost sometimes.
-            </p>
-            
+            <!-- The Glassmorphism Card (Responsive padding and sizing) -->
+            <div class="glass-card w-full p-8 sm:p-12 md:p-16 flex flex-col items-center justify-center text-center mx-4" id="card">
+                
+                <!-- Responsive 404 Number -->
+                <h1 class="parallax-element-heavy text-6xl sm:text-7xl md:text-9xl font-bold tracking-tighter mb-2 sm:mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-300 to-blue-400 text-glow">
+                    404
+                </h1>
+                
+                <!-- Error Title (Scales for mobile) -->
+                <h2 class="parallax-element text-xl sm:text-2xl md:text-4xl font-semibold mb-4 sm:mb-6 text-white/90">
+                    You've strayed into the void.
+                </h2>
+                
+                <!-- Error Description (Scales for readability) -->
+                <p class="parallax-element text-sm sm:text-base md:text-lg text-white/60 max-w-md mx-auto leading-relaxed">
+                    The page you are looking for has been moved, deleted, or never existed in this dimension. Don't worry, even the best explorers get lost sometimes.
+                </p>
+                
+            </div>
         </div>
     </div>
 
     <script>
-        // Select the card and the main window for events
         const card = document.getElementById('card');
+        const container = document.getElementById('container');
         
+        // Track whether we are actively touching the screen to pause mouse calculations
+        let isTouchDevice = false;
+
+        // Prevent default touch behaviors like scrolling to keep it locked in place
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Detect touch devices
+        window.addEventListener('touchstart', () => {
+            isTouchDevice = true;
+        }, { once: true });
+
         // 3D Parallax Effect on Mouse Move
         document.addEventListener('mousemove', (e) => {
-            // Get screen dimensions
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
+            // Disable 3D follow effect on touch devices as it causes jitter
+            if (isTouchDevice) return;
+
+            // Calculate rotation based on center of screen
+            // Reduced the divisor (80 instead of 40) for a more subtle, premium feel
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 80;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 80;
             
-            // Apply calculated rotation to the card
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            // Limit the maximum rotation to prevent the card from flipping too much
+            const clampedX = Math.max(-15, Math.min(15, xAxis));
+            const clampedY = Math.max(-15, Math.min(15, yAxis));
+            
+            card.style.transform = `rotateY(${clampedX}deg) rotateX(${clampedY}deg)`;
         });
 
         // Reset the card position smoothly when mouse leaves the window
         document.addEventListener('mouseleave', () => {
+            if (isTouchDevice) return;
             card.style.transition = 'transform 0.5s ease-out';
             card.style.transform = `rotateY(0deg) rotateX(0deg)`;
         });
 
-        // Remove the transition delay when mouse enters for snappy tracking
+        // Remove the long transition delay when mouse enters for snappy tracking
         document.addEventListener('mouseenter', () => {
-            // Wait a tiny bit for the reset transition to finish if they just left
+            if (isTouchDevice) return;
+            // Short delay to allow smooth reset transition to finish if just triggered
             setTimeout(() => {
-                card.style.transition = 'transform 0.1s ease';
-            }, 10);
+                card.style.transition = 'transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            }, 50);
         });
         
-        // Ensure touch devices have a subtle floating effect since they lack mouse tracking
-        if ('ontouchstart' in window) {
-            let floatDirection = 1;
-            let currentY = 0;
-            
-            setInterval(() => {
-                currentY += 0.5 * floatDirection;
-                if(Math.abs(currentY) > 5) floatDirection *= -1;
-                
-                card.style.transition = 'transform 1s ease-in-out';
-                card.style.transform = `translateY(${currentY}px)`;
-            }, 50);
-        }
     </script>
 </body>
 </html>
