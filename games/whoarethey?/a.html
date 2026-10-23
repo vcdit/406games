@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║  YOUR LINKS GO IN THE BARRIER BELOW (direct links only: .mp3 .ogg ║
+     ║  .wav for sounds, .jpg .png .webp for images). Leave "" to skip.  ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<script>
+/* ██████████████████ BARRIER START: edit only inside ██████████████████ */
+const CONFIG={
+ LOCK_WALLPAPER:"https://87zvq539b99alq0p.public.blob.vercel-storage.com/Photo/lockscreen.jpg",   // lock screen image
+ HOME_WALLPAPER:"https://87zvq539b99alq0p.public.blob.vercel-storage.com/Photo/homescreen.jpg",   // home screen image
+ IMG_911_AVATAR:"https://87zvq539b99alq0p.public.blob.vercel-storage.com/Photo/squarepfp911avatar.jpg",   // optional picture on the 911 call screen
+ SND_911_CALL:"https://87zvq539b99alq0p.public.blob.vercel-storage.com/Photo/911emergencysound.mp3",     // REAL 911 audio, plays when the 911 call connects
+ SND_RING:"https://87zvq539b99alq0p.public.blob.vercel-storage.com/Photo/ipringtone.mp3",         // optional ringing sound (built-in ringback if empty)
+ SND_CALL_END:"https://87zvq539b99alq0p.public.blob.vercel-storage.com/Photo/endcallsf.mp3",     // optional call-ended sound
+ SND_NOTIFY:"https://87zvq539b99alq0p.public.blob.vercel-storage.com/Photo/notification.mp3",       // optional notification sound
+ SND_SCARE:"https://87zvq539b99alq0p.public.blob.vercel-storage.com/Photo/jumpsker.mp3"         // optional jumpscare sound
+};
+/* ██████████████████ BARRIER END: do not edit below ██████████████████ */
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Thriller OS</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{height:100%;margin:0;background:#05070d;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;overflow:hidden}
+body{display:flex;align-items:center;justify-content:center}
+#phone{width:min(390px,100vw);height:min(844px,100vh);background:#000;border-radius:56px;border:10px solid #1c1c1e;box-shadow:0 0 0 2px #444,0 30px 80px #000a;position:relative;overflow:hidden}
+@media(max-width:500px){#phone{border:0;border-radius:0;width:100vw;height:100vh}}
+.L{position:absolute;inset:0}
+.wall{background:radial-gradient(circle at 25% 15%,#6a4cff,transparent 55%),radial-gradient(circle at 85% 85%,#ff3d7f,transparent 50%),#0e1030;background-size:cover;background-position:center}
+#isl{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:112px;height:32px;background:#000;border-radius:20px;z-index:400}
+#sb{position:absolute;top:0;left:0;right:0;height:52px;display:flex;justify-content:space-between;align-items:center;padding:8px 28px 0;font-size:15px;font-weight:600;z-index:300}
+#sb.d{color:#000}#sb span{padding:8px 4px}
+.sg{display:inline-flex;gap:2px;align-items:flex-end;height:11px;margin-right:4px}.sg i{width:3px;background:currentColor;border-radius:1px}
+.bt{display:inline-block;width:25px;height:12px;border:1.5px solid currentColor;border-radius:4px;position:relative;margin-left:5px;vertical-align:-1px;opacity:.9}.bt i{position:absolute;inset:1px;background:currentColor;border-radius:2px}
+#title{z-index:350;background:#07070c;display:flex;flex-direction:column;align-items:center;padding:70px 18px 30px;gap:14px;overflow:hidden;text-align:center}
+#title.abs{background:#150003}#title.abs:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% -10%,#e0000066,transparent 60%);pointer-events:none}
+#tt{font-size:34px;font-weight:800;letter-spacing:4px;z-index:2}.abs #tt{color:#ff2a2a;text-shadow:0 0 18px #f00}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;z-index:2}
+.chips button{background:#ffffff18;color:#fff;border:1px solid #ffffff30;border-radius:16px;padding:7px 11px;font-size:13px}
+.chips button.on{background:#fff;color:#000}.chips button.m6.on{background:#b00;color:#fff}
+#mdesc{background:#ffffff10;border-radius:16px;padding:14px;font-size:14px;line-height:1.45;z-index:2;min-height:96px;width:100%}
+#sbtn{background:#34c759;border:0;color:#fff;font-size:18px;font-weight:700;padding:14px 40px;border-radius:30px;z-index:2;margin-top:6px}
+.abs #sbtn{background:#c00}
+#ec{font-size:12px;opacity:.6;z-index:2}
+#blood{position:absolute;inset:0;pointer-events:none;z-index:1}
+.dr{position:absolute;top:-10px;width:9px;height:0;border-radius:0 0 6px 6px;background:linear-gradient(#c00,#600);animation:dp linear infinite}
+@keyframes dp{0%{height:0}70%{height:150px;opacity:1}100%{height:230px;top:70px;opacity:0}}
+#lock{z-index:60;text-align:center;padding-top:96px;transition:transform .5s,opacity .5s}
+#lock.off{transform:translateY(-100%);opacity:0;pointer-events:none}
+#lt{font-size:86px;font-weight:300;line-height:1;text-shadow:0 2px 20px #0005}#ld{font-size:20px;margin-top:4px}
+.ln{margin:36px 14px 0;background:#2a2a3acc;backdrop-filter:blur(20px);border-radius:20px;padding:11px 14px;text-align:left;font-size:14px}.ln small{opacity:.6}
+.lb{position:absolute;bottom:50px;width:50px;height:50px;border-radius:50%;background:#0006;backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:22px}
+#hint{position:absolute;bottom:20px;width:100%;opacity:.8;font-size:13px;animation:bl 2s infinite}@keyframes bl{50%{opacity:.25}}
+#pc{z-index:70;background:#000b;backdrop-filter:blur(30px);display:none;flex-direction:column;align-items:center;padding-top:110px}#pc.on{display:flex}
+.pct{font-size:19px;margin-bottom:6px}.dots{font-size:22px;letter-spacing:10px;margin:14px;min-height:30px}
+.kp{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:6px 24px;justify-items:center}
+.kp button{width:72px;height:72px;border-radius:50%;border:0;background:#e5e5ea;font-size:28px;color:#000}
+.kp.w button{background:#ffffff2e;color:#fff}.kp.w button:active{background:#fff7}
+.pcb{display:flex;justify-content:space-between;width:300px;margin-top:20px;font-size:16px}
+.sh{animation:shk .4s}@keyframes shk{25%{transform:translateX(-12px)}75%{transform:translateX(12px)}}
+#hs{padding:62px 16px 0;z-index:10}
+.wg{background:#ffffff26;backdrop-filter:blur(20px);border-radius:22px;padding:14px 16px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center}.wg b{font-size:30px;font-weight:300}
+.g{display:grid;grid-template-columns:repeat(4,1fr);gap:20px 6px}
+.ic{text-align:center;font-size:11px}
+.sq{width:60px;height:60px;border-radius:14px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center;font-size:30px;position:relative;box-shadow:0 3px 8px #0005}
+.bd{position:absolute;top:-6px;right:-6px;background:#ff3b30;border-radius:10px;min-width:20px;height:20px;font:700 12px/20px sans-serif;font-style:normal;display:none;padding:0 5px;color:#fff}
+.dock{position:absolute;bottom:20px;left:12px;right:12px;height:88px;background:#ffffff30;backdrop-filter:blur(25px);border-radius:32px;display:flex;justify-content:space-around;align-items:center}
+.app{z-index:50;background:#f2f2f7;color:#000;transform:scale(.3);opacity:0;pointer-events:none;border-radius:40px;transition:.3s cubic-bezier(.2,.9,.3,1);display:flex;flex-direction:column;padding-top:52px}
+.app.on{transform:none;opacity:1;pointer-events:auto;border-radius:0}
+#body{flex:1;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:24px}
+.hd{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#f9f9f9e8;border-bottom:1px solid #0002;font-size:17px;position:sticky;top:0;z-index:2}
+.hd span{width:70px;color:#007aff}.hd b{flex:1;text-align:center}
+.row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border-bottom:1px solid #0001;font-size:16px;justify-content:space-between}
+.row .fl{flex:1;min-width:0}.row small{display:block;color:#888;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.av{width:42px;height:42px;border-radius:50%;background:#aaa;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+.si{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex:none}
+.dot{width:10px;height:10px;background:#007aff;border-radius:50%}
+.chat{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;background:#fff;min-height:300px}
+.b{max-width:75%;padding:9px 13px;border-radius:19px;margin-bottom:6px;font-size:15px;animation:pop .25s}
+.b.r{background:#e9e9eb;align-self:flex-start}.b.s{background:#007aff;color:#fff;align-self:flex-end}
+.dl{align-self:center;font-size:11px;color:#999;margin:8px 0}
+@keyframes pop{from{transform:scale(.8);opacity:0}}
+.ch{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;background:#f2f2f7;min-height:48px}
+.ch button,.btn{border:1px solid #007aff;color:#007aff;background:#fff;border-radius:18px;padding:8px 14px;font-size:14px}
+.grp{margin:14px 12px;border-radius:12px;overflow:hidden}.cap{margin:14px 28px 0;font-size:12px;color:#888}
+.sw{position:relative;width:51px;height:31px;flex:none}.sw input{opacity:0;position:absolute}.sw s{position:absolute;inset:0;background:#e5e5ea;border-radius:16px;transition:.2s}
+.sw s:after{content:"";position:absolute;width:27px;height:27px;top:2px;left:2px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px #0004}
+.sw input:checked+s{background:#34c759}.sw input:checked+s:after{left:22px}
+.gr{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}.ph{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:44px}
+.nt{padding:18px;background:#fffbe6;flex:1;font-size:17px;line-height:1.6}
+.tg{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px}
+.tile{background:#fff;border-radius:20px;padding:16px;height:104px;display:flex;flex-direction:column;justify-content:space-between}
+.tile span{font-size:26px}.tile small{color:#888}.tile.on{background:#ffd479}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px;background:#000;flex:1;align-content:start}
+.cam{background:#101a12;height:150px;border-radius:8px;position:relative;display:flex;align-items:center;justify-content:center;color:#9f9;overflow:hidden;animation:fl .2s infinite alternate}
+.cam.off{background:#111;animation:none;color:#666}@keyframes fl{to{background:#14201a}}
+.cam .sc{font-size:50px}.cam small{position:absolute;bottom:4px;left:6px;font:10px monospace}
+.cam:before{content:"●REC";position:absolute;top:4px;right:6px;color:red;font:10px monospace;animation:bl 1s infinite}.cam.off:before{content:""}
+.dial{text-align:center;font-size:34px;padding:20px;min-height:76px}
+.call{width:72px;height:72px;border-radius:50%;border:0;background:#34c759;font-size:28px;margin:14px auto;display:block}
+.srch{padding:8px 12px;background:#f9f9f9}.srch input{width:100%;padding:9px 12px;border-radius:10px;border:0;background:#e3e3e8;font-size:16px}
+.vf{flex:1;background:#000;display:flex;align-items:center;justify-content:center;font-size:20px;color:#888;position:relative;min-height:380px}.vf.lit{background:linear-gradient(#3b3f52,#1c1e28);color:#ccc}
+.shut{width:70px;height:70px;border-radius:50%;border:5px solid #fff;background:#ffffff33;display:block;margin:14px auto}
+#modal{z-index:420;background:#000a;display:none;align-items:center;justify-content:center}#modal.on{display:flex}
+.card{background:#fff;color:#000;border-radius:22px;padding:20px;width:86%;text-align:center;max-height:90%;overflow:auto}
+.card .kp{padding:0}.card .kp button{width:60px;height:60px;font-size:24px}
+.card input{width:100%;padding:10px;font-size:16px;margin:12px 0;border:1px solid #ccc;border-radius:8px;user-select:text}
+.cb,.card>button{display:block;width:100%;margin-top:8px;padding:11px;border:0;border-radius:12px;background:#007aff;color:#fff;font-size:15px}
+#bn{position:absolute;top:56px;left:50%;width:92%;transform:translate(-50%,-220%);background:#262633f2;backdrop-filter:blur(20px);border-radius:22px;padding:11px 14px;z-index:410;transition:transform .4s;font-size:14px;display:flex;gap:10px;align-items:center}
+#bn.on{transform:translate(-50%,0)}#bn small{opacity:.6;display:block}#bn .sq{width:36px;height:36px;font-size:19px;margin:0;border-radius:9px;flex:none}
+#toast{position:absolute;bottom:120px;left:50%;transform:translateX(-50%);background:#000c;padding:9px 16px;border-radius:20px;font-size:14px;z-index:430;opacity:0;transition:.3s;pointer-events:none;text-align:center}#toast.on{opacity:1}
+#dim{background:#000;opacity:0;z-index:300;pointer-events:none;transition:opacity 2s}
+#hi{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;background:#fff;border-radius:3px;z-index:440;opacity:.8}
+#nc,#cc{z-index:380;background:#000a;backdrop-filter:blur(30px);display:none;padding:60px 14px 20px;overflow:auto}#nc.on,#cc.on{display:block}
+.nn{background:#ffffff1f;border-radius:18px;padding:10px 14px;margin-bottom:8px;font-size:14px}.nn small{opacity:.6;display:block}
+.ct{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ct div{background:#ffffff22;border-radius:22px;padding:22px 10px;text-align:center;font-size:14px}.ct div.on{background:#fff;color:#000}.ct span{font-size:28px;display:block}
+#end{z-index:500;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:14px}#end.on{display:flex}
+#end h1{margin:0;letter-spacing:2px;font-family:monospace}#end button{padding:12px 24px;border:0;border-radius:12px;background:#fff;font-size:16px}
+</style></head><body>
+<div id="phone">
+<div class="L wall" id="hw"></div><div id="isl"></div>
+<div id="sb"><span id="clk" onclick="openNC()">9:41</span><span onclick="openCC()"><span class="sg"><i style="height:4px"></i><i style="height:6px"></i><i style="height:8px"></i><i style="height:11px"></i></span><span id="net">5G</span><span class="bt"><i id="bf"></i></span> <span id="bp"></span></span></div>
+<div class="L" id="hs"><div class="wg"><div><small id="wd"></small><br><b id="wt">58°</b></div><div style="font-size:42px">🌙</div></div><div class="g" id="grid"></div><div class="dock" id="dock"></div></div>
+<div class="L app" id="app"><div id="body"></div></div>
+<div class="L wall" id="lock" onclick="showPc()"><div id="lt">9:41</div><div id="ld"></div><div id="lns"></div><div class="lb" style="left:44px" onclick="event.stopPropagation();S.torch=!S.torch;toast('🔦 '+(S.torch?'On':'Off'));dimUp()">🔦</div><div class="lb" style="right:44px" onclick="event.stopPropagation();toast('Camera unavailable on lock screen')">📷</div><div id="hint"></div></div>
+<div class="L" id="pc"></div>
+<div class="L" id="dim"></div>
+<div class="L" id="nc" onclick="this.classList.remove('on')"></div><div class="L" id="cc" onclick="if(event.target==this)this.classList.remove('on')"></div>
+<div id="bn" onclick="bnClick()"></div><div id="toast"></div>
+<div class="L" id="modal" onclick="if(event.target==this)closeM()"></div>
+<div class="L" id="title"><div id="blood"></div><div id="tt">THRILLER OS</div><div class="chips" id="lgs"></div><div class="chips" id="mds"></div><div id="mdesc"></div><button id="sbtn" onclick="startGame()"></button><div id="ec"></div></div>
+<div class="L" id="end"></div>
+<div id="hi" onclick="closeApp()"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id),z=ms=>new Promise(r=>setTimeout(r,ms));
+if(CONFIG.LOCK_WALLPAPER)$('lock').style.backgroundImage=`url("${CONFIG.LOCK_WALLPAPER}")`;
+if(CONFIG.HOME_WALLPAPER)$('hw').style.backgroundImage=`url("${CONFIG.HOME_WALLPAPER}")`;
+const LG=['English','Indonesia','日本語','繁體中文','简体中文'];
+const K={
+start:['Start Game','Mulai Game','ゲーム開始','開始遊戲','开始游戏'],sel:['Mode','Mode','モード','模式','模式'],
+end:['Endings found','Ending ditemukan','発見したエンディング','已解鎖結局','已解锁结局'],
+tap:['Tap to unlock','Ketuk untuk membuka','タップして解除','點一下解鎖','点按解锁'],
+pass:['Enter Passcode','Masukkan Kode','パスコードを入力','輸入密碼','输入密码'],
+emg:['Emergency','Darurat','緊急','緊急來電','紧急呼叫'],cancel:['Cancel','Batal','キャンセル','取消','取消'],back:['Back','Kembali','戻る','返回','返回'],
+rounds:['Rounds','Ronde','ラウンド','回合','回合'],
+a_msgs:['Messages','Pesan','メッセージ','訊息','信息'],a_cctv:['Cams','Kamera CCTV','監視カメラ','監視器','监控'],a_home:['Home','Rumah','ホーム','家庭','家庭'],a_photos:['Photos','Foto','写真','照片','照片'],a_notes:['Notes','Catatan','メモ','備忘錄','备忘录'],a_mail:['Mail','Surel','メール','郵件','邮件'],a_phone:['Phone','Telepon','電話','電話','电话'],a_set:['Settings','Pengaturan','設定','設定','设置'],a_cam:['Camera','Kamera','カメラ','相機','相机'],a_maps:['Maps','Peta','マップ','地圖','地图'],a_acct:['Account','Akun','アカウント','帳號','账号'],a_clock:['Clock','Jam','時計','時鐘','时钟'],
+m0:['Pre-Easy','Pra-Mudah','超イージー','超簡單','超简单'],m1:['Easy','Mudah','イージー','簡單','简单'],m2:['Normal','Normal','ノーマル','普通','普通'],m3:['Hard','Sulit','ハード','困難','困难'],m4:['Extreme','Ekstrem','エクストリーム','極限','极限'],m5:['Most Extreme','Paling Ekstrem','最エクストリーム','超極限','超极限'],m6:['Absolute','Absolut','アブソリュート','絕對','绝对'],
+d0:['A stranger texts you. Few steps, very long timers, free hints. Perfect for learning the phone.','Orang asing mengirim pesan. Sedikit langkah, waktu sangat panjang, ada petunjuk. Cocok untuk belajar.','見知らぬ人からメッセージ。手順は少なく、時間はとても長く、ヒントあり。操作に慣れるのに最適。','陌生人傳訊息給你。步驟少、時間很長、有提示。適合熟悉手機操作。','陌生人给你发信息。步骤少、时间很长、有提示。适合熟悉手机操作。'],
+d1:["He's at your door. Adds a Maps clue. Long timers, gentle hints.",'Dia di depan pintu. Ada petunjuk Peta. Waktu panjang, petunjuk ringan.','彼が玄関に。マップの手がかりが追加。時間は長め、ヒントあり。','他就在門外。新增地圖線索。時間較長、有提示。','他就在门外。新增地图线索。时间较长、有提示。'],
+d2:['Power cut and a clue hidden in the dark. Adds a Camera puzzle. Normal timers.','Listrik padam, petunjuk tersembunyi di kegelapan. Ada teka-teki Kamera. Waktu normal.','停電、暗闇に隠された手がかり。カメラのパズル追加。通常の制限時間。','停電了，線索藏在黑暗中。新增相機謎題。時間正常。','停电了，线索藏在黑暗中。新增相机谜题。时间正常。'],
+d3:["Your cloud account is hacked. Fix it before you're locked out. Tighter timers, fewer hints.",'Akun cloud-mu diretas. Perbaiki sebelum terkunci. Waktu lebih ketat, petunjuk sedikit.','クラウドアカウントが乗っ取られた。締め出される前に修復を。時間は短め、ヒントは少なめ。','你的雲端帳號被入侵。在被鎖住前修復。時間更緊、提示更少。','你的云端账号被入侵。在被锁住前修复。时间更紧、提示更少。'],
+d4:['Passcode lockouts, phishing traps, 2-step codes and short timers. No hints.','Kunci kode sandi, jebakan phishing, kode 2 langkah, waktu pendek. Tanpa petunjuk.','パスコードロック、フィッシングの罠、2段階認証、短い制限時間。ヒントなし。','密碼鎖定、釣魚陷阱、兩步驟驗證碼、時間很短。沒有提示。','密码锁定、钓鱼陷阱、两步验证码、时间很短。没有提示。'],
+d5:['He remotely unlocks your doors. Relock everything, fast. Battery drains quickly.','Dia membuka pintumu dari jauh. Kunci ulang semuanya, cepat. Baterai cepat habis.','彼が遠隔でドアを解錠。すぐに全て再施錠。バッテリーの減りが早い。','他遠端解鎖你的門。快速重新上鎖。電量消耗很快。','他远程解锁你的门。快速重新上锁。电量消耗很快。'],
+d6:['No mercy. Double relocks, wrong codes drain battery, tiny timers, no hints.','Tanpa ampun. Kunci ulang dua kali, kode salah menguras baterai, waktu sangat singkat.','容赦なし。再施錠が2回、誤入力でバッテリー減少、極短の制限時間、ヒントなし。','毫不留情。兩次重新上鎖，輸錯碼會耗電，時間極短，沒有提示。','毫不留情。两次重新上锁，输错码会耗电，时间极短，没有提示。']};
+const rnd=n=>Math.floor(Math.random()*n),pk_=a=>a[rnd(a.length)],p2=n=>String(n).padStart(2,'0'),sh=a=>a.sort(()=>Math.random()-.5),MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+/* every playthrough gets different codes, names and clues */
+const RND={bm:rnd(12),bd:1+rnd(28),year:String(1920+rnd(70)),dog:pk_(['Biscuit','Maple','Shadow','Pepper','Waffles','Ziggy','Luna','Rocky']),garage:String(1000+rnd(9000)),cellar:String(100+rnd(900)),suite:String(1000+rnd(9000)),wifi:pk_(['moonlight','sunflower','lighthouse','blueberry','starfish','pinecone']),hpw:pk_(['anchor77','harbor99','gutter52','lantern31']),hip:'10.'+(20+rnd(200))+'.'+(20+rnd(200))+'.'+(20+rnd(200)),bk:String(100000+rnd(900000)),mom:'555-01'+(10+rnd(80))};
+RND.pass=p2(RND.bm+1)+p2(RND.bd);RND.pw=RND.dog.toLowerCase()+RND.year;RND.safe=String((RND.year%100||10)*RND.dog.length);
+const S={lg:0,mode:0,si:-1,st:[],doors:{front:0,back:0,garage:0,cellar:0},showCellar:0,showSafe:0,power:1,fig:0,bat:60,wifi:'HOME_WIFI',air:0,lpm:0,snd:1,ban:1,torch:0,fl:0,dial:'',tk:0,done:0,f:{},tm:[],gc:RND.garage,av:{maps:0,cam:0,acct:0},pcw:0,aboutN:0,ptab:0,mq:'',msel:null,drain:0,played:0,reauthAt:0,cx:''};
+const t=k=>{const a=K[k];return a?(a[S.lg]||a[0]):k};
+Object.assign(K,{a_acct:['Gaggle','Gaggle','Gaggle','Gaggle','Gaggle'],a_files:['Files','Berkas','ファイル','檔案','文件'],a_calc:['Calculator','Kalkulator','計算機','計算機','计算器'],a_cal:['Calendar','Kalender','カレンダー','行事曆','日历'],a_term:['Terminal','Terminal','ターミナル','終端機','终端'],cont:['Continue','Lanjut','続ける','繼續','继续']});
+const ST=[['door','garage','wifi','call'],['door','garage','maps','wifi','call'],['door','garage','cam','maps','safe','wifi','call'],['door','garage','cam','maps','quiz','safe','acct','wifi','call'],['door','garage','cam','maps','quiz','safe','acct','relock','wifi','call'],['door','garage','cam','maps','quiz','safe','acct','relock','acct2','wifi','call'],['door','garage','cam','maps','quiz','safe','acct','relock','acct2','relock','wifi','call']];
+const TS=()=>[2,1.6,1.25,1,.8,.6,.45][S.mode],BAT=[60,50,42,36,30,26,22];
+const E={
+b1:['bad','Unlocked','He walked in through the door you left open.'],
+b2:['bad','Flatline','Your battery died. The phone went dark. So did everything else.'],
+b3:['bad','Wrong Information','You gave the wrong name or address. Police arrested the wrong person while he slipped out the back.'],
+b4:['bad','Locked Out','He took over your account and wiped the phone remotely. You were completely alone.'],
+b5:['bad','Gotcha','The “police alert” email was his. You handed him everything.'],
+g1:['good','Safe & Sound','Police arrested R. Hale at 3:42 AM, still holding a copy of your key.'],
+g2:['good','Caught on Camera','Your flash photo and the Maps clue built an airtight case against Hale.'],
+g3:['good','Family First','Mom and Jake reached you before the police did. Hale ran from the sirens and was caught two streets away.'],
+g4:['good','Silent Night','You never answered him once. He lost his game, and the police found him waiting outside.'],
+g5:['good','Cloud Justice','Signing out his device exposed his location. Hale was arrested at his desk.'],
+m1:['mixed','Arrested, Hacked','Hale is in custody, but he drained your accounts before you could lock him out.'],
+m2:['mixed','Last Bar','You were rescued at 1%, but the call dropped before you gave the whole story. He escaped.'],
+m3:['mixed','Justice, Eventually','You could not name him. Weeks later, your photo caught up with him.'],
+m4:['mixed','The Deal','You accepted his “deal.” He is in jail now... but someone keeps texting you.'],
+m5:['mixed','Out the Garage','You are safe, but a door was left open and he vanished into the night.'],
+s1:['secret','The Fourth Wall','Sam: “Ha! You found the beta tester line. None of this is real... right?”'],
+s2:['secret','Developer Mode','You opened the dev menu. The stalker is a script. Or is it?']};
+const APPS={msgs:['💬','linear-gradient(#6df36d,#13b82f)'],cctv:['📹','linear-gradient(#555,#111)'],home:['🏠','linear-gradient(#ffb340,#ff8a00)'],photos:['🌸','#fff'],notes:['📝','linear-gradient(#ffe36a,#ffc400)'],mail:['✉️','linear-gradient(#4ab3ff,#0a6cff)'],phone:['📞','linear-gradient(#6df36d,#13b82f)'],set:['⚙️','linear-gradient(#aaa,#666)'],cam:['📷','linear-gradient(#ccc,#777)'],maps:['🗺️','linear-gradient(#7fe0a0,#2aa6e0)'],acct:['🔐','linear-gradient(#a58bff,#5a3df0)'],clock:['⏰','#222'],files:['📁','linear-gradient(#5ac8fa,#1a7bd8)'],calc:['🧮','linear-gradient(#444,#111)'],cal:['📅','#fff'],term:['⌨️','#000']};
+const T={unknown:{name:'Unknown',u:0,m:[]},
+mom:{name:'Mom',u:0,m:[{d:'Mar 12'},{r:1,t:'Dinner Sunday? Bring Jake!'},{r:0,t:'Sure mom ❤️'},{d:MN[RND.bm]+' '+RND.bd},{r:1,t:"It's Jake's birthday party today, don't forget the cake 🎂"},{r:0,t:'Already got it!'},{d:'Sep 3'},{r:1,t:"Dad's old phone notes are on your phone, right? His PIN is the year the house was built."}]},
+jake:{name:'Jake',u:0,m:[{d:'Aug 2'},{r:1,t:'lol u still use my bday as ur phone passcode 😂'},{r:0,t:'shut up'},{r:1,t:'also dont trust that landlord, he gives me the creeps'}]},
+sam:{name:'Sam (Beta)',u:0,m:[{d:'Sep 28'},{r:1,t:'yo!! be my beta tester for the phone horror thing 😂 my number is 555-0142'},{r:0,t:'lol ok'},{r:1,t:'if u ever get stuck, just call me. there is a secret line'},{r:1,t:'also i left a Terminal app on ur phone for testing. dont hack anyone lol 😂'}]}};
+const MAIL=[{f:'Orchard Weekly',s:'Your October newsletter',b:'Ten fall soups you can make in one pot.',u:0},{f:'Bank',s:'Statement ready',b:'Your statement is available.',u:0},{f:'Hale Properties',s:'Lease renewal',b:'Dear tenant, please visit our office at 17 Alder St, Suite '+RND.suite+', to renew your lease.',u:0}];
+const PH=[['🏡','Porch plaque: “EST. '+RND.year+'”','#7a9'],['🐕',RND.dog+' at the park (our dog)','#fa6'],['🍝','Dinner, Sunday','#e86'],['🧥','Jun 2 — a man in a gray coat across the street. His van reads “HALE PROPERTIES”.','#789'],['🌙','Sunset from the roof','#a8c']];
+const NOTES=[['Groceries','Milk<br>Eggs<br>Candles (for outages!)'],['Dad (private) 🔒','Garage keypad: '+RND.garage+'<br>Breaker: basement<br>Safe code: last two digits of the house year × number of letters in the dog’s name<br>The landlord still has a master key.',1],['Old accounts (2019)','Account password = our dog’s name + the year the house was built. All lowercase, no spaces.'],['Recipe: soup','2 onions, broth, patience.'],['Ideas 2018','Learn Lua. Fix the garage light.']];
+const FILES=[['lease_renewal.pdf','📄','Tenant: A. Rivera<br>Landlord: R. Hale, Hale Properties<br>Office: 17 Alder St, Suite '+RND.suite],['vet_invoice.pdf','📄','Patient: '+RND.dog+' · Annual checkup · Paid'],['voice_memo.m4a','🎙️','Transcript: “...he said he keeps a copy of every key. Every. Single. Key.”'],['taxes_2025.xlsx','📊','Spreadsheet · nothing suspicious here.'],['IMG_0412.heic','🖼️','Photo — see Photos app.']];
+const NETS=[['HOME_WIFI','No Internet · jammed'],['PARK_5G','🔒'],['CAFE_GUEST','🔒']],PW={PARK_5G:RND.wifi,CAFE_GUEST:'coffee'};
+const PL=[['Hale Properties','17 Alder St, Suite '+RND.suite,'Office',250,40,'Office Wi-Fi: HALE_OFFICE · password '+RND.hpw+'<br>★★☆ “Walks into flats without notice.”'],['Home','42 Alder Lane','Saved',80,100,''],['Old Cellar Pub','9 Dock Rd','Bar',300,120,''],['Park Residence','44 Alder Lane','Neighbor',120,60,'']];
+const V={app:null,th:null,note:null,mail:null};
+const hd=(ti,b)=>`<div class=hd>${b?`<span onclick="${b}">‹ ${t('back')}</span>`:'<span></span>'}<b>${ti}</b><span></span></div>`;
+const ic=k=>`<div class=ic onclick="openApp('${k}')"><div class=sq style="background:${APPS[k][1]}">${APPS[k][0]}<em class=bd id=bd-${k}></em></div>${t('a_'+k)}</div>`;
+function drawHome(){$('grid').innerHTML=['cctv','home','photos','cam','maps','acct','set','clock'].map(ic).join('');$('dock').innerHTML=['phone','msgs','mail','notes'].map(ic).join('')}
+let AC;function tone(f,s,d,ty,v){const o=AC.createOscillator(),g=AC.createGain();o.type=ty||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||.15,AC.currentTime+s);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+s+d);o.connect(g);g.connect(AC.destination);o.start(AC.currentTime+s);o.stop(AC.currentTime+s+d)}
+function snd(k){if(!S.snd)return;try{AC=AC||new AudioContext();if(k=='ding'){tone(880,0,.2);tone(1320,.12,.3)}else if(k=='tap')tone(500,0,.05,'sine',.08);else if(k=='beat'){tone(55,0,.18,'sine',.5);tone(50,.28,.2,'sine',.4)}else if(k=='scare'){tone(70,0,.7,'sawtooth',.3);tone(95,0,.7,'square',.2)}else if(k=='lock')tone(300,0,.12,'square',.1)}catch(e){}}
+function blood(on){const b=$('blood');if(!on){b.innerHTML='';return}if(b.children.length)return;for(let i=0;i<16;i++){const d=document.createElement('div');d.className='dr';d.style.left=(i*6.4+Math.random()*3)+'%';d.style.animationDuration=(2.5+Math.random()*3)+'s';d.style.animationDelay=(Math.random()*3)+'s';b.appendChild(d)}}
+function found(){try{return JSON.parse(localStorage.getItem('tos_end')||'[]')}catch(e){return[]}}
+function drawTitle(){$('lgs').innerHTML=LG.map((n,i)=>`<button class="${S.lg==i?'on':''}" onclick="setLg(${i})">${n}</button>`).join('');
+ $('mds').innerHTML=[0,1,2,3,4,5,6].map(i=>`<button class="m${i} ${S.mode==i?'on':''}" onclick="selMode(${i})">${t('m'+i)}</button>`).join('');
+ $('mdesc').innerHTML=`<b>${t('m'+S.mode)}</b> · ${t('rounds')}: ${ST[S.mode].length-1}<br><br>${t('d'+S.mode)}`;
+ $('sbtn').textContent=t('start');$('title').className='L'+(S.mode==6?' abs':'');blood(S.mode==6);$('ec').textContent=t('end')+': '+found().length+'/'+Object.keys(E).length}
+function setLg(i){S.lg=i;drawTitle();drawHome();drawLock();render()}
+function selMode(i){S.mode=i;if(i==6)snd('beat');drawTitle()}
+function startGame(){snd('ding');$('title').style.display='none';S.played=1;drawLock()}
+function drawLock(){$('hint').textContent=t('tap');$('lns').innerHTML=`<div class=ln><small>MESSAGES · now</small><br><b>Unknown</b><br>Hello?</div><div class=ln><small>MESSAGES · 2h ago</small><br><b>Jake</b><br>${S.mode<=3?'u should change ur passcode lol, my bday is not secure 😂':'lol u should really change ur passcode'}</div>`}
+let PCV='';
+function showPc(){if(!S.played||$('lock').classList.contains('off'))return;PCV='';drawPc();$('pc').classList.add('on')}
+function hidePc(){$('pc').classList.remove('on')}
+function drawPc(m){$('pc').innerHTML=`<div class=pct id=pt>${m||t('pass')}</div><div class=dots>${'●'.repeat(PCV.length)+'○'.repeat(4-PCV.length)}</div><div class="kp w">`+[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>k===''?'<span></span>':`<button onclick="pcK('${k}')">${k}</button>`).join('')+`</div><div class=pcb><span onclick=emg()>${t('emg')}</span><span onclick=hidePc()>${t('cancel')}</span></div>`}
+function pcK(k){if(S.lockUntil>Date.now())return;snd('tap');if(k=='⌫')PCV=PCV.slice(0,-1);else PCV+=k;drawPc();if(PCV.length==4){setTimeout(()=>{if(PCV==RND.pass){hidePc();$('lock').classList.add('off');if(!S.started){S.started=1;begin()}}else{PCV='';S.pcw++;drawPc('Wrong passcode');$('pc').classList.add('sh');setTimeout(()=>$('pc').classList.remove('sh'),400);if(S.mode>=4&&S.pcw%3==0){S.lockUntil=Date.now()+20000;drawPc('Locked for 20s');setTimeout(()=>drawPc(),20000)}}},150)}}
+function emg(){$('modal').innerHTML=`<div class=card><b>🚨 Emergency</b><p>No service — signal blocked.</p><div style="background:#f2f2f7;border-radius:12px;padding:12px;text-align:left;font-size:14px"><b>Medical ID</b><br>Owner: Alex Rivera<br>Emergency contact: Jake Rivera (brother)<br>Contact's date of birth: 06/14</div><button onclick=closeM()>OK</button></div>`;$('modal').classList.add('on')}
+const R={
+msgs(){
+ if(!V.th)return hd(t('a_msgs'))+Object.keys(T).filter(k=>T[k].m.length).map(k=>{const q=T[k],l=[...q.m].reverse().find(m=>m.t);return `<div class=row onclick="V.th='${k}';T.${k}.u=0;render()"><div class=av>${q.name[0]}</div><div class=fl><b>${q.name}</b><small>${l?l.t:''}</small></div>${q.u?'<i class=dot></i>':''}</div>`}).join('');
+ const q=T[V.th];
+ return hd(q.name,"V.th=null;render()")+'<div class=chat id=chat>'+q.m.map(m=>m.d?`<div class=dl>${m.d}</div>`:`<div class="b ${m.r?'r':'s'}">${m.t}</div>`).join('')+(q.typ?'<div class="b r">• • •</div>':'')+'</div><div class=ch>'+(q.c?q.c.map((o,i)=>`<button onclick="pick('${V.th}',${i})">${o[0]}</button>`).join(''):'')+'</div>'},
+cctv(){const C=[[1,'Living Room','🛋️'],[2,'Back Door','🌲'],[3,'Front Porch','🪴'],[4,'Garage','🚗']];
+ return hd(t('a_cctv'))+'<div class=cg>'+C.map(c=>`<div class="cam ${S.power?'':'off'}"><span class=sc>${S.power?(S.fig==c[0]?'🕴️':c[2]):''}</span><small>CAM ${c[0]} · ${c[1]}${S.power?'':' · NO SIGNAL'}</small></div>`).join('')+'</div>'},
+home(){const d=S.doors,tl=(k,n,i)=>`<div class="tile ${d[k]?'on':''}" onclick="hm('${k}')"><span>${i}</span><b>${n}</b><small>${d[k]?'Locked':'Unlocked'}</small></div>`;
+ return hd(t('a_home'))+'<div class=tg>'+tl('front','Front Door','🚪')+tl('back','Back Door','🚪')+tl('garage','Garage','🚗')+(S.showCellar?tl('cellar','Cellar','🪜'):'')+`<div class="tile ${S.power?'on':''}"><span>💡</span><b>Power</b><small>${S.power?'Normal':'OUTAGE'}</small></div></div>`},
+photos(){return hd(t('a_photos'))+'<div class=gr>'+PH.map((p,i)=>`<div class=ph style="background:${p[2]}" onclick="viewP(${i})">${p[0]}</div>`).join('')+'</div>'},
+notes(){if(V.note!==null){const n=NOTES[V.note];return hd(n[0],"V.note=null;render()")+`<div class=nt>${n[1]}</div>`}
+ return hd(t('a_notes'))+'<div class=grp>'+NOTES.map((n,i)=>`<div class=row onclick="openNote(${i})">${n[0]}</div>`).join('')+'</div>'},
+mail(){if(V.mail!==null){const m=MAIL[V.mail];return hd(t('a_mail'),"V.mail=null;render()")+`<div class=nt style="background:#fff"><b>${m.s}</b><br><small>From: ${m.f}</small><br><br>${m.b}${m.btn?`<br><br><button class=cb onclick="${m.btn[1]}">${m.btn[0]}</button>`:''}</div>`}
+ return hd('Inbox')+MAIL.map((m,i)=>`<div class=row onclick="V.mail=${i};MAIL[${i}].u=0;render()"><div class=fl><b>${m.f}</b><small>${m.s}</small></div>${m.u?'<i class=dot></i>':''}</div>`).join('')},
+phone(){const tabs=`<div class=ch style="justify-content:center"><button onclick="S.ptab=0;render()">Favorites</button><button onclick="S.ptab=1;render()">Keypad</button></div>`;
+ if(!S.ptab)return hd(t('a_phone'))+tabs+'<div class=grp><div class=row onclick="callC(\'Mom\')"><span>Mom</span><span>📞</span></div><div class=row onclick="callC(\'Jake\')"><span>Jake</span><span>📞</span></div></div>';
+ return hd(t('a_phone'))+tabs+`<div class=dial>${S.dial||'&nbsp;'}</div><div class=kp>`+[1,2,3,4,5,6,7,8,9,'*',0,'⌫'].map(k=>`<button onclick="dk('${k}')">${k}</button>`).join('')+'</div><button class=call onclick="dialNow()">📞</button>'},
+cam(){const lit=S.power;return hd(t('a_cam'))+`<div class="vf ${lit?'lit':''}">${lit?'🛋️ Living room':'(too dark)'}<span style="position:absolute;top:10px;right:14px;color:#fff;font-size:15px" onclick="S.fl=!S.fl;render()">⚡ ${S.fl?'ON':'OFF'}</span></div><button class=shut onclick="shoot()"></button>`},
+maps(){const m=S.msel,pins=PL.map((p,i)=>`<circle cx=${p[3]} cy=${p[4]} r=${m===i?9:5} fill="${m===i?'#e33':'#36c'}"/>`).join('');
+ return hd(t('a_maps'))+`<div class=srch><input id=mq value="${S.mq}" placeholder="Search" oninput="S.mq=this.value;mapRes()"></div><svg viewBox="0 0 360 160" style="width:100%;background:#e8efe0"><path d="M0 80H360M180 0V160M60 0L120 160M300 0L240 160" stroke="#fff" stroke-width="8" fill="none"/><rect x=0 y=130 width=360 height=30 fill="#a9d4ef"/>${pins}</svg><div id=mres>${mapList()}</div>`},
+acct(){return hd(t('a_acct'))+`<div style="text-align:center;padding:16px"><div class=av style="width:70px;height:70px;font-size:28px;margin:auto">A</div><b>Alex Rivera</b><br><small>alex.rivera@cloudmail.com</small></div><div class=cap>PASSWORD</div><div class=grp><div class=row onclick="chPw()"><span>Change password</span><small style="width:auto">${S.f.pw?'Updated just now':'Last changed 2019'}</small></div></div><div class=cap>SIGNED-IN DEVICES</div><div class=grp><div class=row><span>📱 This iPhone</span><small style="width:auto">now</small></div><div class=row><span>💻 MacBook Pro</span><small style="width:auto">2 days ago</small></div>${S.f.out?'':`<div class=row><div class=fl>🖥️ Unknown · Chrome on Windows<small>17 Alder St · active now</small></div><button class=btn onclick="signOut()">Sign out</button></div>`}</div>`},
+set(){const sw=(ic,c,n,k)=>`<div class=row><div style="display:flex;gap:12px;align-items:center"><div class=si style="background:${c}">${ic}</div>${n}</div><label class=sw><input type=checkbox ${S[k]?'checked':''} onchange="S.${k}=this.checked?1:0;dimUp();render()"><s></s></label></div>`;
+ return hd(t('a_set'))+'<div class=grp>'+sw('✈️','#ff9500','Airplane Mode','air')+`<div class=row><div style="display:flex;gap:12px;align-items:center"><div class=si style="background:#34c759">📶</div>Cellular</div><small style="width:auto;color:#888">Jammed</small></div></div><div class=cap>WI-FI</div><div class=grp>`+NETS.map(n=>`<div class=row onclick="joinNet('${n[0]}')"><span>${n[0]}</span><small style="width:auto">${S.wifi==n[0]?'✓ Connected':n[1]}</small></div>`).join('')+'</div><div class=grp>'+sw('🔔','#ff3b30','Notifications','ban')+sw('🔊','#ff2d55','Sounds','snd')+sw('🔋','#34c759','Low Power Mode','lpm')+`<div class=row onclick="toast('Set CONFIG at top of HTML')"><div style="display:flex;gap:12px;align-items:center"><div class=si style="background:#5ac8fa">🖼️</div>Wallpaper</div></div><div class=row onclick="setLg((S.lg+1)%5)"><div style="display:flex;gap:12px;align-items:center"><div class=si style="background:#007aff">🌐</div>Language</div><small style="width:auto">${LG[S.lg]}</small></div><div class=row onclick="aboutTap()"><div style="display:flex;gap:12px;align-items:center"><div class=si style="background:#8e8e93">ⓘ</div>About</div><small style="width:auto">Build 7.0.1</small></div></div><p class=cap>Battery: ${S.bat}%</p>`}};
+function shoot(){snd('tap');if(S.power){PH.push(['🤳','Selfie','#456']);return toast('📸 Saved to Photos')}
+ if(!S.fl)return toast('Too dark — try the flash');
+ if(S.st[S.si]!='cam'){PH.push(['📸','Flash photo of the room','#222']);return toast('📸 Saved to Photos')}
+ const i=S.si;PH.push(['📸','Flash photo of the wall: “'+RND.cellar.split('').join(' ')+'” scratched into the paint.','#222']);S.f.photo=1;S.showCellar=1;toast('📸 Saved to Photos');render();
+ say('unknown',["You found it. The cellar door is unlocked...","Lock it before I go down."]);dl(100,()=>{if(S.si==i)end('b1')})}
+function signOut(){inp('Current password',v=>{if(v.toLowerCase()!='biscuit1962')return wrong();
+ if(S.mode>=4){S.code=String(Math.floor(100000+Math.random()*900000));mail('Account','Your verification code','Your code is <b>'+S.code+'</b>');pad('6-digit code (see Mail)',6,c=>{if(c==S.code){S.f.out=1;toast('Device signed out');render();chk()}else wrong()})}
+ else{S.f.out=1;toast('Device signed out');render();chk()}},'password')}
+function chPw(){if(!S.f.out)return toast('Sign out the unknown device first');if(S.f.pw)return;inp('New password',v=>{if(v.length>=8&&v.toLowerCase()!='biscuit1962'){S.f.pw=1;toast('Password changed');render();chk()}else toast('Min 8 characters, must be new')},'new password')}
+function mapList(){const q=S.mq.trim().toLowerCase();return '<div class=grp>'+(q?PL.map((p,i)=>[p,i]).filter(x=>(x[0][0]+x[0][1]).toLowerCase().includes(q)).map(x=>`<div class=row onclick="pickPl(${x[1]})"><div class=fl><b>${x[0][0]}</b><small>${x[0][1]} · ${x[0][2]}</small></div>›</div>`).join('')||'<div class=row>No results</div>':'<div class=row>Search for a place…</div>')+'</div>'}
+function mapRes(){$('mres').innerHTML=mapList()}
+function pickPl(i){S.msel=i;if(PL[i][0]=='Hale Properties'){S.f.maps=1;toast('📍 '+PL[i][1])}render();chk()}
+function render(){const u=Object.values(T).reduce((a,q)=>a+q.u,0),mu=MAIL.filter(m=>m.u).length;
+ document.querySelectorAll('#bd-msgs').forEach(e=>{e.textContent=u;e.style.display=u?'block':'none'});document.querySelectorAll('#bd-mail').forEach(e=>{e.textContent=mu;e.style.display=mu?'block':'none'});
+ if(V.app){$('body').innerHTML=R[V.app]();const c=$('chat');if(c)c.scrollTop=1e9}
+ $('sb').className=V.app?'d':'';$('bp').textContent=S.bat+'%';$('bf').style.width=Math.max(S.bat,4)+'%';$('net').textContent=S.air?'✈':(S.wifi=='PARK_5G'?'Wi-Fi':'5G')}
+function openApp(k){if(k=='clock')return toast('Clock unavailable');if(S.av[k]===0)return toast('Unavailable — nothing to do here yet');V.app=k;V.th=null;V.note=null;V.mail=null;snd('tap');$('app').classList.add('on');render()}
+function closeApp(){V.app=null;V.th=null;$('app').classList.remove('on');closeM();render()}
+function toast(x){const e=$('toast');e.textContent=x;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1900)}
+let bt;function banner(app,ti,b,th){N.unshift([app,ti,b]);if(!S.ban)return;snd('ding');$('bn').innerHTML=`<div class=sq style="background:${APPS[app][1]}">${APPS[app][0]}</div><div><small>${t('a_'+app).toUpperCase()} · now</small><b>${ti}</b><div>${b}</div></div>`;$('bn').dataset.th=th||'';$('bn').dataset.app=app;$('bn').classList.add('on');navigator.vibrate&&navigator.vibrate(150);clearTimeout(bt);bt=setTimeout(()=>$('bn').classList.remove('on'),3500)}
+const N=[];
+function bnClick(){const th=$('bn').dataset.th,a=$('bn').dataset.app;$('bn').classList.remove('on');if($('lock').classList.contains('off')){openApp(a);if(th){V.th=th;T[th].u=0;render()}}}
+function openNC(){$('cc').classList.remove('on');$('nc').innerHTML=`<h2 style="margin:0 0 12px">${$('clk').textContent}</h2>`+(N.slice(0,12).map(n=>`<div class=nn><small>${t('a_'+n[0])}</small><b>${n[1]}</b><br>${n[2]}</div>`).join('')||'<div class=nn>No notifications</div>');$('nc').classList.add('on')}
+function openCC(){$('nc').classList.remove('on');const tl=(k,i,n)=>`<div class="${S[k]?'on':''}" onclick="S.${k}=S.${k}?0:1;dimUp();render();openCC()"><span>${i}</span>${n}</div>`;$('cc').innerHTML='<div class=ct>'+tl('air','✈️','Airplane')+tl('lpm','🔋','Low Power')+tl('snd','🔊','Sound')+tl('torch','🔦','Flashlight')+'</div>';$('cc').classList.add('on')}
+function dimUp(){$('dim').style.opacity=S.power?0:(S.torch?.15:.55)}
+function closeM(){$('modal').classList.remove('on')}
+function viewP(i){$('modal').innerHTML=`<div class=card onclick=closeM()><div style="font-size:80px">${PH[i][0]}</div><p>${PH[i][1]}</p></div>`;$('modal').classList.add('on')}
+function wrong(){snd('scare');if(S.mode>=6){S.bat=Math.max(1,S.bat-4);render();toast('Wrong! −4% battery')}else toast('Wrong code')}
+let P;function pad(ti,n,cb){P={ti,n,cb,v:''};drawPad();$('modal').classList.add('on')}
+function drawPad(){$('modal').innerHTML=`<div class=card><b>${P.ti}</b><div class=dots>${'●'.repeat(P.v.length)+'○'.repeat(P.n-P.v.length)}</div><div class=kp>`+[1,2,3,4,5,6,7,8,9,'✕',0,'⌫'].map(k=>`<button onclick="pk('${k}')">${k}</button>`).join('')+'</div></div>'}
+function pk(k){snd('tap');if(k=='✕')return closeM();if(k=='⌫')P.v=P.v.slice(0,-1);else if(P.v.length<P.n)P.v+=k;drawPad();if(P.v.length==P.n){const v=P.v,cb=P.cb;setTimeout(()=>{closeM();cb(v)},200)}}
+function inp(ti,cb,ph){$('modal').innerHTML=`<div class=card><b>${ti}</b><input id=iv autocapitalize=off autocomplete=off placeholder="${ph||''}"><button onclick="inpOk()">OK</button></div>`;$('modal').classList.add('on');window._icb=cb}
+function inpOk(){const v=$('iv').value.trim();closeM();window._icb(v)}
+function openNote(i){if(NOTES[i][2]&&!S.notesOK)return pad('PIN',4,v=>{if(v==RND.year){S.notesOK=1;V.note=i;render()}else wrong()});V.note=i;render()}
+function hm(k){if(S.doors[k])return;if(k=='garage')pad('Garage code',4,v=>v==S.gc?lock('garage'):wrong());else if(k=='cellar')pad('Cellar code',3,v=>v==RND.cellar?lock('cellar'):wrong());else lock(k)}
+function lock(d){S.doors[d]=1;snd('lock');toast('🔒 '+d+' locked');render();chk()}
+function joinNet(n){if(n=='HOME_WIFI')return toast('No Internet — jammed');if(S.wifi==n)return;inp('Password for “'+n+'”',v=>{if(v.toLowerCase()==PW[n]){S.wifi=n;toast('Connected');render();chk()}else toast('Incorrect password')})}
+function aboutTap(){S.aboutN++;if(S.aboutN>=7)end('s2');else if(S.aboutN>3)toast(`${7-S.aboutN} more…`)}
+function dk(k){if(k=='⌫')S.dial=S.dial.slice(0,-1);else if(S.dial.length<12)S.dial+=k;snd('tap');render()}
+const online=()=>!S.air&&S.wifi=='PARK_5G';
+function callC(n){if(!online())return toast('Call failed — no connection');S.f.mom=1;cf(`📞 ${n}`,n=='Mom'?'“Honey, call 911! I’m driving over right now. Check your dad’s notes if you’re stuck.”':'“I’m coming over! Call 911, give them his name!”',[['OK',closeM]])}
+function dialNow(){const n=S.dial;S.dial='';render();if(!n)return;if(n=='5550142')return end('s1');if(n!='911')return toast('No answer…');if(!online())return toast('Call failed — no connection');if(S.st[S.si]!='call')return toast('Line busy');callFlow()}
+let CF=[];function cf(h,txt,o){CF=o.map(x=>x[1]);$('modal').innerHTML=`<div class=card><b>${h}</b><p>${txt}</p>`+o.map((x,i)=>`<button class=cb onclick="CF[${i}]()">${x[0]}</button>`).join('')+'</div>';$('modal').classList.add('on')}
+function callFlow(){const Q=[['911, what is your emergency?',[['Someone is stalking me inside my home',()=>1],['Wrong number',closeM]],0],
+ ['Who is threatening you?',[['Mr. Hale, my landlord',()=>S.f.who='hale'],["I don't know",()=>S.f.who='idk'],['My brother Jake',()=>S.f.who='jake']]]];
+ if(S.mode>=3)Q.push(['What is your address?',[['42 Alder Lane',()=>1],['17 Alder St',()=>S.f.bad=1],['9 Dock Rd',()=>S.f.bad=1]]]);
+ if(S.mode>=5)Q.push(['Where does he work from?',[['Suite 1409',()=>1],['Suite 731',()=>S.f.bad=1],['Suite 4471',()=>S.f.bad=1]]]);
+ const go=i=>{if(i>=Q.length){closeM();return fin()}cf('📞 911 Dispatch',Q[i][0],Q[i][1].map(o=>[o[0],()=>{if(o[1]===closeM)return closeM();o[1]();go(i+1)}]))};go(0)}
+async function fin(){closeApp();const id=judge();await say('unknown',id[0]=='g'?["Who did you call?","…Hale. You worked it out."]:["They can't find me.","Nobody can."]);await z(2200);end(id)}
+function doorsOK(){return Object.keys(S.doors).filter(k=>k!='cellar'||S.showCellar).every(k=>S.doors[k])}
+function judge(){const f=S.f;if(f.who=='jake'||f.bad)return 'b3';if(f.who=='idk')return 'm3';if(S.bat<=4)return 'm2';if(!doorsOK())return 'm5';if(S.mode>=3&&!(f.out&&f.pw))return 'm1';if(f.deal)return 'm4';if(f.photo&&f.maps)return 'g2';if(f.out)return 'g5';if(f.mom)return 'g3';if(!f.spoke)return 'g4';return 'g1'}
+function end(id){if(S.done)return;S.done=1;S.tm.forEach(clearTimeout);const e=E[id],C={bad:'#ff3b30',good:'#34c759',mixed:'#ff9f0a',secret:'#bf5af2'}[e[0]];snd(e[0]=='bad'?'scare':'ding');
+ try{const a=found();if(!a.includes(id)){a.push(id);localStorage.setItem('tos_end',JSON.stringify(a))}}catch(x){}
+ $('end').innerHTML=`<small style="color:${C};letter-spacing:3px">${e[0].toUpperCase()} ENDING</small><h1 style="color:${C}">${e[1]}</h1><p>${e[2]}</p><small>${t('end')}: ${found().length}/${Object.keys(E).length}</small><button onclick="location.reload()">Play again</button>`;$('end').classList.add('on')}
+async function say(th,lines,gap=800){for(const l of lines){if(S.done&&th!='unknown')return;const q=T[th];q.typ=1;render();await z(Math.min(1800,350+l.length*28));q.typ=0;q.m.push({r:1,t:l});if(!(V.app=='msgs'&&V.th==th)){q.u++;banner('msgs',q.name,l,th)}render();await z(gap)}}
+function ask(th,o){T[th].c=o;render()}
+function pick(th,i){const o=T[th].c[i];T[th].c=null;S.f.spoke=1;T[th].m.push({r:0,t:o[0]});render();o[1]&&o[1]()}
+function mail(f,s,b,btn){MAIL.unshift({f,s,b,u:1,btn});render();banner('mail',f,s)}
+const dl=(s,f)=>S.tm.push(setTimeout(()=>{if(!S.done)f()},s*1000*TS()));
+function hint(x,s){const i=S.si;dl(s,()=>{if(S.mode<=3&&S.si==i)say('jake',['hint: '+x])})}
+function chk(){if(S.chk&&S.chk()){S.chk=null;nextSt()}}
+function nextSt(){S.si++;const id=S.st[S.si];if(id)STG[id](S.si)}
+function blackout(){if(!S.power)return;S.power=0;S.fig=0;S.bat=Math.min(S.bat,BAT[S.mode]);S.drain=1;dimUp();snd('scare');render()}
+const STG={
+door(i){S.fig=3;S.chk=()=>S.doors.front&&S.doors.back;say('unknown',["The front door is open. So is the back."]);hint('Open Home and lock the doors',40);
+ dl(45,()=>{if(S.si==i){S.fig=2;render();say('unknown',["I'm at the back door now."])}});dl(120,()=>{if(S.si==i)end('b1')})},
+async garage(i){S.fig=4;S.chk=()=>S.doors.garage;hint('Dad’s locked note has the garage code. The PIN is the year on our porch plaque',50);
+ await say('unknown',["Two down. Clever.","The garage is wide open. You don't know the code, do you?"]);
+ say('mom',["Honey?? Why the missed call? Is everything ok?"]).then(()=>ask('mom',[["Someone's outside. I need dad's garage code.",()=>say('mom',["Oh my god. Call 911!!","Dad's private note has it. PIN is the year the house was built.","Check your Photos, you took a pic of the plaque."])]]))},
+async cam(i){blackout();S.av.cam=1;S.chk=()=>S.showCellar&&S.doors.cellar;hint('Open Camera, turn the flash on, and take a photo of the room',50);
+ await say('unknown',["Lights out.","I left you something on the wall. Too dark to read?","Your camera has a flash, doesn't it?"])},
+async maps(i){S.av.maps=1;S.chk=()=>S.f.maps;hint('Unknown has a company van in your Photos. Search its name in Maps',55);
+ await say('unknown',["Want to know who I am?","My name is on a van you've walked past every day.","Find my office. If you dare."])},
+async acct(i){S.av.acct=1;S.chk=()=>S.f.out&&S.f.pw;hint('Old note: password = dog name + house year, all lowercase',70);
+ await say('unknown',["Funny thing. I'm already logged into your cloud account.","Every photo. Every message.","Sign me out. Change the password. If you can."]);dl(240,()=>{if(S.si==i)end('b4')})},
+async relock(i){const x=S.si;Object.keys(S.doors).forEach(k=>S.doors[k]=0);S.gc=x==S.st.lastIndexOf('relock')&&S.mode==6&&x!=S.st.indexOf('relock')?'9041':'1409';S.chk=doorsOK;snd('scare');render();
+ await say('unknown',["Did you really think those were locked?","I just unlocked every door from your account.",`New garage code is my suite number${S.gc=='9041'?', backwards':''}.`]);dl(60,()=>{if(S.si==i)end('b1')})},
+async wifi(i){blackout();MAIL.length&&mail('Mrs. Park','Wifi, dear!','Hi sweetheart! If your wifi acts up, use ours anytime. Network: PARK_5G · password: moonlight. Love, Mrs. Park');
+ if(S.mode>=1)mail('R. Hale <hale@halepropertiesco.com>','FINAL NOTICE','You changed the locks without permission. I keep a copy of every key. We will talk tonight.<br><br>— R. Hale, Hale Properties');
+ if(S.mode>=2)mail('Police Dept ALERT','Verify to dispatch units','Your emergency request was received. Verify your identity to dispatch units immediately.',['Verify now',"end('b5')"]);
+ S.chk=()=>S.wifi=='PARK_5G';hint('Settings → Wi-Fi → PARK_5G. Password is in your mail',45);
+ await say('unknown',["Your phone's at "+S.bat+"%.","Tick tock."]);
+ if(S.mode>=1)ask('unknown',[["What do you want from me?",async()=>{await say('unknown',["Stay quiet and I'll leave. A deal?"]);ask('unknown',[['Deal',()=>S.f.deal=1],['No deal',()=>S.f.deal=0]])}]])},
+async call(i){S.chk=null;hint('Open Phone → Keypad → 911. Name him!',40);await say('jake',["dude CALL 911 NOW","tell them his name"]);if(S.mode>=3)say('unknown',["Don't."])}};
+async function begin(){await z(1500);await say('unknown',["Hello?","I know you're home, Alex.","Don't bother with the police. I cut your landline and a jammer is blocking your signal.",`Let's play a game. ${S.st.length-1} rounds. Fail one and I come inside.`,"Round one."]);snd('beat');nextSt()}
+S.st=ST[0];
+setInterval(()=>{if(!S.drain||S.done)return;S.tk++;if(!S.lpm||S.tk%2==0)S.bat--;if(S.mode>=5&&S.tk%3==0)S.bat--;render();if(S.bat<=0)end('b2')},6000);
+function tick(){const d=new Date(),h=d.getHours()%12||12,m=String(d.getMinutes()).padStart(2,'0');$('clk').textContent=$('lt').textContent=h+':'+m;$('ld').textContent=$('wd').textContent=d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}
+$('modal').addEventListener('click',()=>{});
+let g0=null;const PH_=$('phone');
+PH_.addEventListener('pointerdown',e=>{const r=PH_.getBoundingClientRect();g0={x:e.clientX-r.left,y:e.clientY-r.top,h:r.height,w:r.width}});
+PH_.addEventListener('pointerup',e=>{if(!g0)return;const r=PH_.getBoundingClientRect(),dy=e.clientY-r.top-g0.y;
+ if(g0.y<60&&dy>60){g0.x>g0.w/2?openCC():openNC()}
+ else if(dy<-50&&g0.y>g0.h-60){V.app?closeApp():showPc()}
+ else if(dy<-70&&g0.y>150){$('nc').classList.remove('on');$('cc').classList.remove('on')}
+ g0=null});
+S.st=ST[S.mode];setInterval(tick,5000);tick();drawHome();drawTitle();render();
+// keep S.st in sync with selected mode at start
+const _sg=startGame;startGame=function(){S.st=ST[S.mode];S.bat=60;_sg()};
+/* ===== v3 additions & overrides ===== */
+Object.assign(E,{s3:['secret','Counter-Hack','You broke into Hale’s computer and sent his own evidence to the police. He was arrested before sunrise.'],s4:['secret','Overload','His power supply overloaded and his computer exploded. So did every file proving what he did. He is gone, and so is the evidence.']});
+function drawHome(){$('grid').innerHTML=['cctv','home','photos','cam','maps','acct','files','cal','calc','clock','term','set'].map(ic).join('');$('dock').innerHTML=['phone','msgs','mail','notes'].map(ic).join('')}
+function openApp(k){V.app=k;V.th=null;V.note=null;V.mail=null;V.file=null;snd('tap');$('app').classList.add('on');render()}
+function nextSt(){S.si++;const id=S.st[S.si],i=S.si;if(id)setTimeout(()=>{if(!S.done&&S.si==i)STG[id](i)},i?2500:0)}
+/* intro */
+const intro=document.createElement('div');intro.className='L';intro.style.cssText='z-index:360;background:#000;display:none;flex-direction:column;justify-content:center;padding:60px 26px;font:17px/1.65 Georgia,serif;color:#ddd';$('phone').appendChild(intro);
+function startGame(){S.st=ST[S.mode];S.bat=60;snd('ding');$('title').style.display='none';S.played=1;drawLock();showIntro()}
+function showIntro(){const full=["My name is Alex Rivera. I’m 26, and I live alone at 42 Alder Lane with my dog.","A few weeks ago I reported my old landlord for walking into my flat without notice. Since then, small things: the garage light flickering, my doors found unlocked in the morning, a gray van parked across the street.","Tonight, at 3:07 AM, my phone lit up in the dark.","I don’t know who is texting me. I only know that he knows where I am, and he always seems one step ahead.","Maybe it’s the doors. Maybe it’s my phone. Maybe it’s my account.","I have to find out before he finds me."].join('\n\n');
+ intro.style.display='flex';intro.innerHTML='<div id=itx></div><div id=ibtn style="margin-top:26px;text-align:center;font:14px sans-serif;color:#777">tap to skip</div>';let i=0;const el=$('itx');
+ const fin_=()=>{clearInterval(tm);el.textContent=full;$('ibtn').innerHTML=`<button onclick="introDone()" style="background:#fff;color:#000;border:0;padding:12px 30px;border-radius:24px;font-size:16px">${t('cont')}</button>`};
+ const tm=setInterval(()=>{i++;el.textContent=full.slice(0,i)+'▌';if(i%4==0)snd('tap');if(i>=full.length)fin_()},32);
+ intro.onclick=e=>{if(e.target.tagName!='BUTTON'&&el.textContent.replace('▌','').length<full.length)fin_()}}
+function introDone(){intro.style.display='none'}
+/* codes */
+function emg(){$('modal').innerHTML=`<div class=card><b>🚨 Emergency</b><p>No service — signal blocked.</p><div style="background:#f2f2f7;border-radius:12px;padding:12px;text-align:left;font-size:14px"><b>Medical ID</b><br>Owner: Alex Rivera<br>Emergency contact: Jake Rivera (brother)<br>Contact's date of birth: ${p2(RND.bm+1)}/${p2(RND.bd)}</div><button onclick=closeM()>OK</button></div>`;$('modal').classList.add('on')}
+function hm(k){if(S.doors[k])return;if(k=='garage')pad('Garage code',4,v=>v==S.gc?lock('garage'):wrong());else if(k=='cellar')pad('Cellar code',3,v=>v==RND.cellar?lock('cellar'):wrong());else lock(k)}
+function openSafe(){if(S.f.safe)return toast('Already open — see Notes');inp('Safe code',v=>{if(v==RND.safe){S.f.safe=1;NOTES.push(['Safe contents','Backup code: '+RND.bk+'<br>“For emergencies — Dad”']);toast('🔓 Safe opened — see Notes');render();chk()}else wrong()},'digits')}
+function wrong(){snd('scare');const c=S.mode>=6?4:S.mode>=4?2:0;if(c){S.bat=Math.max(1,S.bat-c);render();toast('Wrong! −'+c+'% battery')}else toast('Wrong code')}
+/* Gaggle */
+const GI=[['out','🖥️','Devices',()=>S.f.out?'All devices OK':'2 unknown devices signed in','devs()'],['app','🧩','Third-party access',()=>S.f.app?'Clean':'TrackMe Pro can read your location','revApp()'],['loc','📍','Location sharing',()=>S.f.loc?'Off':'Sharing live location with unknown@mailbox.net','locOff()'],['pw','🔑','Password',()=>S.f.pw?'Changed just now':'Last changed 2019','chPw()'],['fwd','📨','Mail forwarding',()=>S.f.fwd?'Off':'All mail → h.alder77@mailbox.net','fwdOff()'],['rec','📱','Recovery phone',()=>S.f.rec?RND.mom:'555-0166 (not yours)','recPh()'],['tfa','🛡️','2-step verification',()=>S.f.tfa?'On':'Off','tfa()']];
+const reauth=cb=>Date.now()-S.reauthAt<120000?cb():inp('Re-enter your password',v=>{if(v.toLowerCase()==RND.pw){S.reauthAt=Date.now();cb()}else{wrong();if(S.mode>=4)say('unknown',["Wrong password, Alex. I know the real one."])}},'password');
+const done_=(k,m)=>{S.f[k]=1;toast(m);render();chk()};
+function devs(){if(S.f.out)return;reauth(()=>done_('out','Signed out 2 devices'))}
+function revApp(){if(S.f.app)return;reauth(()=>done_('app','TrackMe Pro revoked'))}
+function locOff(){if(S.f.loc)return;reauth(()=>{done_('loc','Location sharing off');say('unknown',["Where did you go? I can't see you anymore."])})}
+function chPw(){if(S.f.pw)return;if(!S.f.out)return toast('Sign out unknown devices first');reauth(()=>inp('New password',v=>{if(v.length>=8&&/\d/.test(v)&&/[a-z]/i.test(v)&&v.toLowerCase()!=RND.pw)done_('pw','Password changed');else toast('8+ chars, letters + digits, must be new')},'new password'))}
+function fwdOff(){if(S.f.fwd)return;reauth(()=>done_('fwd','Forwarding removed'))}
+function recPh(){if(S.f.rec)return;reauth(()=>inp('New recovery phone',v=>{if(v.replace(/\D/g,'')==RND.mom.replace(/\D/g,''))done_('rec','Recovery phone updated');else toast('Use a number you trust — check Phone')},'555-01..'))}
+function tfa(){if(S.f.tfa)return;reauth(()=>inp('Enter a backup code',v=>{if(v==RND.bk)done_('tfa','2-step is on');else wrong()},'6 digits'))}
+function showLog(){cf('📋 Recent activity','02:51 · Sign-in · Chrome on Windows · IP '+RND.hip+'<br>02:52 · Location viewed · TrackMe Pro<br>02:55 · Mail rule added<br>Yesterday · Recovery phone changed',[['Close',closeM]])}
+/* apps */
+Object.assign(R,{
+acct(){return hd(t('a_acct'))+`<div style="text-align:center;padding:14px"><div class=av style="width:64px;height:64px;font-size:26px;margin:auto;background:#5a3df0">A</div><b>Alex Rivera</b><br><small>alex.rivera@cloudmail.com</small></div><div class=cap>SECURITY CHECKUP · ${GI.filter(g=>S.f[g[0]]).length}/${GI.length}</div><div class=grp>`+GI.map(g=>`<div class=row onclick="${g[4]}"><div class=fl>${S.f[g[0]]?'✅':g[1]} <b>${g[2]}</b><small>${g[3]()}</small></div>›</div>`).join('')+`<div class=row onclick="showLog()"><div class=fl>📋 <b>Recent activity</b><small>Sign-ins and locations</small></div>›</div></div>`},
+home(){const d=S.doors,tl=(k,n,i)=>`<div class="tile ${d[k]?'on':''}" onclick="hm('${k}')"><span>${i}</span><b>${n}</b><small>${d[k]?'Locked':'Unlocked'}</small></div>`;
+ return hd(t('a_home'))+'<div class=tg>'+tl('front','Front Door','🚪')+tl('back','Back Door','🚪')+tl('garage','Garage','🚗')+(S.showCellar?tl('cellar','Cellar','🪜'):'')+(S.showSafe?`<div class="tile ${S.f.safe?'on':''}" onclick="openSafe()"><span>🔐</span><b>Safe</b><small>${S.f.safe?'Open':'Locked'}</small></div>`:'')+`<div class="tile ${S.power?'on':''}"><span>💡</span><b>Power</b><small>${S.power?'Normal':'OUTAGE'}</small></div></div>`},
+phone(){const tabs=`<div class=ch style="justify-content:center"><button onclick="S.ptab=0;render()">Favorites</button><button onclick="S.ptab=1;render()">Keypad</button><button onclick="S.ptab=2;render()">Voicemail</button></div>`;
+ if(S.ptab==0)return hd(t('a_phone'))+tabs+`<div class=grp><div class=row onclick="callC('Mom')"><div class=fl>Mom<small>${RND.mom}</small></div>📞</div><div class=row onclick="callC('Jake')"><div class=fl>Jake<small>555-0111</small></div>📞</div></div>`;
+ if(S.ptab==2)return hd(t('a_phone'))+tabs+`<div class=grp><div class=row><div class=fl><b>R. Hale</b><small>Aug 19 · “About your lease… my office line is 555-0166. Suite ${RND.suite}. Call me.”</small></div></div><div class=row><div class=fl><b>Mom</b><small>Jun 14 · “Don’t forget the cake!”</small></div></div><div class=row><div class=fl><b>Vet</b><small>Jul 2 · “${RND.dog}’s checkup is confirmed.”</small></div></div></div>`;
+ return hd(t('a_phone'))+tabs+`<div class=dial>${S.dial||'&nbsp;'}</div><div class=kp>`+[1,2,3,4,5,6,7,8,9,'*',0,'⌫'].map(k=>`<button onclick="dk('${k}')">${k}</button>`).join('')+'</div><button class=call onclick="dialNow()">📞</button>'},
+maps(){const m=S.msel,pins=PL.map((p,i)=>`<circle cx=${p[3]} cy=${p[4]} r=${m===i?9:5} fill="${m===i?'#e33':'#36c'}"/>`).join('');
+ return hd(t('a_maps'))+`<div class=srch><input id=mq value="${S.mq}" placeholder="Search" oninput="S.mq=this.value;mapRes()"></div><svg viewBox="0 0 360 160" style="width:100%;background:#e8efe0"><path d="M0 80H360M180 0V160M60 0L120 160M300 0L240 160" stroke="#fff" stroke-width="8" fill="none"/><rect x=0 y=130 width=360 height=30 fill="#a9d4ef"/>${pins}</svg>`+(m!==null?`<div class=grp><div class=row style="display:block"><b>${PL[m][0]}</b><br><small style="white-space:normal">${PL[m][1]} · ${PL[m][2]}</small><div style="font-size:14px;margin-top:6px">${PL[m][5]}</div></div></div>`:'')+`<div id=mres>${mapList()}</div>`},
+files(){if(V.file!=null)return hd(FILES[V.file][0],"V.file=null;render()")+`<div class=nt style="background:#fff">${FILES[V.file][2]}</div>`;return hd(t('a_files'))+'<div class=grp>'+FILES.map((f,i)=>`<div class=row onclick="V.file=${i};render()"><span>${f[1]} ${f[0]}</span>›</div>`).join('')+'</div>'},
+cal(){const ev=[[MN[RND.bm]+' '+RND.bd,'🎂 Jake’s birthday party'],['Mar 3','📨 Reported landlord to housing office'],['Oct 24','🐕 Vet: '+RND.dog],['Oct 28','🔧 Fix the garage light']];return hd(t('a_cal'))+'<div class=cap>OCTOBER 2026</div><div class=grp>'+ev.map(e=>`<div class=row><span>${e[1]}</span><small style="width:auto">${e[0]}</small></div>`).join('')+'</div>'},
+calc(){return hd(t('a_calc'))+`<div style="background:#000;color:#fff;font-size:44px;text-align:right;padding:30px 20px;min-height:110px;overflow:hidden">${S.cx||'0'}</div><div class=kp style="background:#000;padding:14px;gap:10px;grid-template-columns:repeat(4,1fr);flex:1;align-content:start">`+['C','⌫','÷','×',7,8,9,'−',4,5,6,'+',1,2,3,'=',0,'.'].map(k=>`<button style="width:64px;height:64px;font-size:24px;${/\D/.test(k)&&k!='.'?'background:#ff9f0a;color:#fff':'background:#333;color:#fff'}" onclick="cK('${k}')">${k}</button>`).join('')+'</div>'},
+clock(){return hd(t('a_clock'))+`<div style="text-align:center;padding:30px"><div style="font-size:64px;font-weight:200">${$('clk').textContent}</div><div id=swd style="font-size:40px;margin:24px;font-family:monospace">${swF()}</div><button class=btn onclick=swT()>${S.sw&&S.sw.on?'Stop':'Start'}</button> <button class=btn onclick=swR()>Reset</button></div>`},
+term(){return hd(t('a_term'))+`<div id=tout style="background:#000;color:#6f6;font:13px monospace;padding:12px;flex:1;overflow:auto;white-space:pre-wrap;min-height:380px">${TM.out.join('\n')}</div><input id=tin placeholder="$ " autocapitalize=off autocomplete=off style="background:#111;color:#6f6;border:0;padding:12px;font:15px monospace;user-select:text" onkeydown="if(event.key=='Enter')tcmd(this.value)">`}});
+function cK(k){if(S.cx=='Error')S.cx='';if(k=='C')S.cx='';else if(k=='⌫')S.cx=S.cx.slice(0,-1);else if(k=='='){try{const e=S.cx.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-');if(!/^[\d+\-*/. ()]+$/.test(e))throw 0;S.cx=String(Math.round(Function('return '+e)()*1e6)/1e6)}catch(x){S.cx='Error'}}else S.cx+=k;render()}
+S.sw={on:0,t0:0,acc:0};const swF=()=>{const ms=S.sw.acc+(S.sw.on?Date.now()-S.sw.t0:0);return p2(Math.floor(ms/60000))+':'+p2(Math.floor(ms/1000)%60)+'.'+p2(Math.floor(ms/10)%100)};
+function swT(){if(S.sw.on){S.sw.acc+=Date.now()-S.sw.t0;S.sw.on=0}else{S.sw.t0=Date.now();S.sw.on=1}render()}function swR(){S.sw={on:0,t0:0,acc:0};render()}
+setInterval(()=>{if(V.app=='clock'&&S.sw.on&&$('swd'))$('swd').textContent=swF()},50);
+function pickPl(i){S.msel=i;if(PL[i][0]=='Hale Properties'){S.f.maps=1;toast('📍 '+PL[i][1])}render();chk()}
+/* terminal: hack the attacker */
+const TM={out:['Thriller OS shell — type help'],pw:0,bomb:0,auth:0};
+function tcmd(v){const o=TM.out;$('tin').value='';v=v.trim();
+ if(TM.pw){o.push('Password: ****');TM.pw=0;if(v==RND.hpw){TM.auth=1;S.f.hacked=1;o.push('Welcome to HALE-PC. Type ls.')}else{o.push('Permission denied.');if(S.mode>=4){S.bat=Math.max(2,S.bat-2);render();say('unknown',["I see you knocking."])}}}
+ else if(TM.bomb){TM.bomb=0;if(v.toLowerCase()=='y'){o.push('Overloading PSU... 3... 2... 1...');setTimeout(()=>end('s4'),1500)}else o.push('Aborted.')}
+ else{o.push('$ '+v);const [c,a]=v.split(/\s+/);
+  if(c=='help')o.push('help · scan <ip> · ssh <ip> · ls · cat <file> · send <file> · run <file> · exit');
+  else if(c=='scan')o.push(a==RND.hip?'Host up: HALE-PC · 22/tcp open (ssh)':'Host unreachable.');
+  else if(c=='ssh')a==RND.hip?(o.push('Connecting... (people reuse passwords)'),TM.pw=1):o.push('Connection refused.');
+  else if(!TM.auth&&['ls','cat','send','run'].includes(c))o.push('Not connected.');
+  else if(c=='ls')o.push('evidence.zip  plan.txt  keys.txt  bomb.sh');
+  else if(c=='cat'){o.push({'plan.txt':'Tonight: scare her. If caught, burn the evidence. Backup: evidence.zip','keys.txt':`master keys: garage ${RND.garage}, cellar ${RND.cellar}`,'bomb.sh':'# overloads the power supply. DO NOT RUN.'}[a]||'No such file.')}
+  else if(c=='send'){if(a=='evidence.zip'){o.push('Sending to police tip line... done.');setTimeout(()=>end('s3'),1500)}else o.push('No such file.')}
+  else if(c=='run'){if(a=='bomb.sh'){o.push('This will destroy the target. Continue? (y/n)');TM.bomb=1}else o.push('No such file.')}
+  else if(c=='exit'){TM.auth=0;o.push('Disconnected.')}
+  else if(c)o.push('Unknown command.')}
+ $('tout').textContent=o.join('\n');$('tout').scrollTop=1e9;$('tin').focus()}
+function dialNow(){const n=S.dial.replace(/\D/g,'');S.dial='';render();if(!n)return;if(n=='5550142')return end('s1');if(n==RND.mom.replace(/\D/g,''))return callC('Mom');if(n=='5550166')return cf('📞 Hale Properties','“You have reached Hale Properties, Suite '+RND.suite+'. Leave a message.”',[['Hang up',closeM]]);if(n!='911')return toast('No answer…');if(!online())return toast('Call failed — no connection');if(S.st[S.si]!='call')return toast('Line busy');callFlow()}
+function callFlow(){const Q=[['911, what is your emergency?',[['Someone is stalking me inside my home',()=>1],['Wrong number',closeM]]],['Who is threatening you?',[['Mr. Hale, my landlord',()=>S.f.who='hale'],["I don't know",()=>S.f.who='idk'],['My brother Jake',()=>S.f.who='jake']]]];
+ if(S.mode>=3)Q.push(['What is your address?',sh([['42 Alder Lane',()=>1],['17 Alder St',()=>S.f.bad=1],['9 Dock Rd',()=>S.f.bad=1]])]);
+ if(S.mode>=5)Q.push(['Where does he work from?',sh([['Suite '+RND.suite,()=>1],['Suite '+(1000+rnd(9000)),()=>S.f.bad=1],['Suite '+(1000+rnd(9000)),()=>S.f.bad=1]])]);
+ const go=i=>{if(i>=Q.length){closeM();return fin()}cf('📞 911 Dispatch',Q[i][0],Q[i][1].map(o=>[o[0],()=>{if(o[1]===closeM)return closeM();o[1]();go(i+1)}]))};go(0)}
+/* stages */
+const ACT={acct:()=>S.mode>=4?['out','app','loc','pw']:['out','pw'],acct2:()=>['fwd','rec','tfa']};
+function accStage(id,i,intro,secs,h){const tk=ACT[id]();S.chk=()=>tk.every(k=>S.f[k]);hint(h,70);say('unknown',intro);dl(secs,()=>{if(S.si==i)end('b4')});if(id=='acct')dl(100,()=>{if(S.si==i&&!S.f.loc)say('unknown',["You're in the living room. The lamp is on."])})}
+Object.assign(STG,{
+safe(i){S.showSafe=1;S.chk=()=>S.f.safe;render();hint('Dad’s note has a formula for the safe. Use the Calculator',60);say('unknown',["There's a safe in your garage. Dad kept something in it.","Open it before I do."]);dl(120,()=>{if(S.si==i&&!S.f.safe)say('unknown',["Tick tock."])})},
+quiz(i){S.chk=()=>S.f.quiz;say('unknown',["You found my office. Quick quiz.","Which suite is mine? Wrong answers cost you battery."]).then(()=>{const ch=()=>{ask('unknown',sh([RND.suite,String(1000+rnd(9000)),String(1000+rnd(9000))]).map(x=>['Suite '+x,()=>{if(x==RND.suite){S.f.quiz=1;say('unknown',["Hm. Impressive."]).then(chk)}else{S.bat=Math.max(2,S.bat-3);render();say('unknown',["Wrong. Again."]).then(ch)}}]))};ch()})},
+acct(i){accStage('acct',i,["Funny thing. I'm already logged into your Gaggle account.","Every photo. Your location. Every message.","Sign me out. Change the password. If you can."],240,'Open Gaggle → Security checkup. Old note has your password rule')},
+acct2(i){S.f.fwd=S.f.rec=S.f.tfa=0;accStage('acct2',i,["Round "+i+". I'm back in your account.","I changed your recovery phone and forwarded all your mail.","Lock me out again. This time use a backup code."],220,'Gaggle: remove forwarding, fix recovery phone (use Mom’s number), turn on 2-step with the safe’s backup code')},
+relock(i){const n=S.st.slice(0,i+1).filter(x=>x=='relock').length;Object.keys(S.doors).forEach(k=>S.doors[k]=0);S.gc=n>1?RND.suite.split('').reverse().join(''):RND.suite;S.chk=doorsOK;snd('scare');render();hint('Open Home. New garage code = the suite number from Maps or Files'+(n>1?', backwards':''),35);
+ say('unknown',["Did you really think those were locked?","I unlocked every door from your account.","New garage code is my suite number"+(n>1?', backwards.':'.')]);dl(n>1?45:65,()=>{if(S.si==i)end('b1')})},
+async wifi(i){blackout();mail('Mrs. Park','Wifi, dear!','Hi sweetheart! If your wifi acts up, use ours anytime. Network: PARK_5G · password: '+RND.wifi+'. Love, Mrs. Park');
+ if(S.mode>=1)mail('R. Hale <hale@halepropertiesco.com>','FINAL NOTICE','You changed the locks without permission. I keep a copy of every key. We will talk tonight.<br><br>— R. Hale, Hale Properties');
+ if(S.mode>=2)mail('Police Dept ALERT','Verify to dispatch units','Your emergency request was received. Verify your identity to dispatch units immediately.',['Verify now',"end('b5')"]);
+ S.chk=()=>S.wifi=='PARK_5G';hint('Settings → Wi-Fi → PARK_5G. The password is in your mail',45);
+ await say('unknown',["Your phone's at "+S.bat+"%.","Tick tock."]);
+ if(S.mode>=1)ask('unknown',[["What do you want from me?",async()=>{await say('unknown',["Stay quiet and I'll leave. A deal?"]);ask('unknown',[['Deal',()=>S.f.deal=1],['No deal',()=>S.f.deal=0]])}]])}});
+/* ===== v4: iPhone call screen + audio hooks ===== */
+const st_=document.createElement('style');st_.textContent=`#call{z-index:436;display:none;flex-direction:column;align-items:center;padding:96px 22px 40px;background:linear-gradient(#2c2c34,#0a0a0e);color:#fff}
+.cn{font-size:34px;font-weight:300}.cs{font-size:18px;opacity:.7;margin-top:6px}
+.cav{width:92px;height:92px;border-radius:50%;background:#555 center/cover;margin:18px 0 0;display:flex;align-items:center;justify-content:center;font-size:40px}
+.ctx{margin:18px 0 8px;background:#ffffff14;border-radius:16px;padding:12px 14px;font-size:15px;line-height:1.4;width:100%;text-align:left}
+.cch{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:8px;margin-bottom:auto}.cch button{background:#ffffff26;color:#fff;border:0;border-radius:14px;padding:13px;font-size:15px}
+.cg3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 14px;width:100%;margin-top:auto;margin-bottom:22px}
+.cbn{text-align:center;font-size:12px}.cc{width:66px;height:66px;border-radius:50%;background:#ffffff26;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:26px}.cc.on{background:#fff;color:#000}
+.cend{width:72px;height:72px;border-radius:50%;background:#ff3b30;display:flex;align-items:center;justify-content:center;font-size:30px}.cend span{display:block;transform:rotate(135deg)}`;document.head.appendChild(st_);
+const call=document.createElement('div');call.id='call';call.className='L';$('phone').appendChild(call);
+function playUrl(k,loop){const u=CONFIG[k];if(!u||!S.snd)return null;try{const a=new Audio(u);a.loop=!!loop;a.play().catch(()=>{});return a}catch(e){return null}}
+function beep(f,s,d,v){if(!S.snd)return;try{AC=AC||new AudioContext();tone(f,s,d,'sine',v||.1)}catch(e){}}
+const ringTone=()=>{beep(440,0,1.8,.07);beep(480,0,1.8,.07)};
+let CL=null;
+function callStart(name,sub,onAnswer,failText){if(CL)return;CL={name,sub,t0:0,mute:0,spk:0,pad:0,txt:'',opts:null,a:null,ringA:null,ringT:null,tm:null,fail:''};
+ call.style.display='flex';drawCall();CL.ringA=playUrl('SND_RING',1);if(!CL.ringA){ringTone();CL.ringT=setInterval(ringTone,4000)}
+ const c=CL;c.to=setTimeout(()=>{if(CL!==c)return;clearInterval(c.ringT);try{c.ringA&&c.ringA.pause()}catch(e){}
+  if(failText){c.fail=failText;drawCall();beep(480,0,.25,.1);beep(480,.4,.25,.1);setTimeout(()=>{if(CL===c)callEnd()},1400);return}
+  c.t0=Date.now();c.tm=setInterval(()=>{const e=$('cst');if(e&&CL===c&&!c.fail)e.textContent=cFmt()},500);snd('tap');drawCall();onAnswer&&onAnswer()},2600)}
+const cFmt=()=>{const s=Math.floor((Date.now()-CL.t0)/1000);return Math.floor(s/60)+':'+p2(s%60)};
+function callSay(txt,opts){if(!CL)return;CL.txt=txt;CL.opts=opts;drawCall()}
+function callOpt(i){if(!CL||!CL.opts)return;const o=CL.opts[i];CL.opts=null;o[1]()}
+function callTog(k){if(!CL)return;CL[k]=!CL[k];if(k=='spk'&&CL.a)CL.a.volume=CL.spk?1:.5;drawCall()}
+function callKey(k){beep(300+(parseInt(k)||5)*70,0,.12,.1)}
+function drawCall(){const c=CL;if(!c)return;const b=(i,l,on,fn)=>`<div class=cbn onclick="${fn}"><div class="cc ${on?'on':''}">${i}</div>${l}</div>`;
+ const av=c.name=='911'&&CONFIG.IMG_911_AVATAR?`<div class=cav style="background-image:url('${CONFIG.IMG_911_AVATAR}')"></div>`:`<div class=cav>${c.name=='911'?'🚨':c.name[0]}</div>`;
+ call.innerHTML=`<div class=cn>${c.name}</div><div class=cs id=cst>${c.fail||(c.t0?cFmt():'calling…')}</div>${av}`+(c.txt?`<div class=ctx>${c.txt}</div>`:'')+
+ (c.opts?'<div class=cch>'+c.opts.map((o,i)=>`<button onclick="callOpt(${i})">${o[0]}</button>`).join('')+'</div>':c.pad?'<div class=cg3>'+[1,2,3,4,5,6,7,8,9,'*',0,'#'].map(k=>b(k,'',0,`callKey('${k}')`)).join('')+'</div>':`<div class=cg3>`+b('🔇','mute',c.mute,"callTog('mute')")+b('⌗','keypad',0,"callTog('pad')")+b('🔊','speaker',c.spk,"callTog('spk')")+b('➕','add call',0,"toast('Unavailable during this call')")+b('📹','FaceTime',0,"toast('Unavailable during this call')")+b('👤','contacts',0,"toast('Unavailable during this call')")+'</div>')+
+ `<div class=cend onclick="${c.pad?"callTog('pad')":'callEnd()'}"><span>${c.pad?'↩︎':'📞'}</span></div>`}
+function callEnd(){if(!CL)return;const c=CL;CL=null;clearTimeout(c.to);clearInterval(c.tm);clearInterval(c.ringT);[c.a,c.ringA].forEach(a=>{try{a&&a.pause()}catch(e){}});
+ call.innerHTML=`<div class=cn>${c.name}</div><div class=cs>Call Ended</div>`;if(!playUrl('SND_CALL_END')){beep(480,0,.12);beep(480,.2,.12);beep(480,.4,.12)}setTimeout(()=>{if(!CL)call.style.display='none'},900)}
+function callC(n){if(!online())return callStart(n,'mobile',null,'Call Failed');S.f.mom=1;callStart(n,'mobile',()=>callSay(n=='Mom'?'“Honey, call 911! I’m driving over right now. Check your dad’s notes if you’re stuck.”':'“I’m coming over! Call 911, give them his name!”',[['Hang up',()=>callEnd()]]))}
+function dialNow(){const n=S.dial.replace(/\D/g,'');S.dial='';render();if(!n)return;if(n=='5550142')return end('s1');if(n==RND.mom.replace(/\D/g,''))return callC('Mom');
+ if(n=='5550166')return callStart('Hale Properties','work',()=>callSay('“You have reached Hale Properties, Suite '+RND.suite+'. Leave a message.”',[['Hang up',()=>callEnd()]]));
+ if(n=='911'){if(!online())return callStart('911','Emergency',null,'Call Failed');if(S.st[S.si]!='call')return callStart('911','Emergency',null,'Line Busy');return callFlow()}
+ callStart(n,'mobile',null,'No Answer')}
+function callFlow(){const Q=[['911, what is your emergency?',[['Someone is stalking me inside my home',()=>1],['Wrong number',closeM]]],['Who is threatening you?',[['Mr. Hale, my landlord',()=>S.f.who='hale'],["I don't know",()=>S.f.who='idk'],['My brother Jake',()=>S.f.who='jake']]]];
+ if(S.mode>=3)Q.push(['What is your address?',sh([['42 Alder Lane',()=>1],['17 Alder St',()=>S.f.bad=1],['9 Dock Rd',()=>S.f.bad=1]])]);
+ if(S.mode>=5)Q.push(['Where does he work from?',sh([['Suite '+RND.suite,()=>1],['Suite '+(1000+rnd(9000)),()=>S.f.bad=1],['Suite '+(1000+rnd(9000)),()=>S.f.bad=1]])]);
+ callStart('911','Emergency',()=>{if(CL){CL.a=playUrl('SND_911_CALL');if(CL.a)CL.a.volume=.5}
+  const go=i=>{if(!CL)return;if(i>=Q.length){callSay('Help is on the way. Stay on the line.',null);setTimeout(()=>{callEnd();fin()},2800);return}
+   callSay(Q[i][0],Q[i][1].map(o=>[o[0],()=>{if(o[1]===closeM)return callEnd();callSay('You: '+o[0],null);o[1]();setTimeout(()=>go(i+1),1400)}]))};go(0)})}
+const _snd0=snd;snd=function(k){if(k=='ding'&&playUrl('SND_NOTIFY'))return;if(k=='scare'&&playUrl('SND_SCARE'))return;_snd0(k)};
+</script></body></html>
