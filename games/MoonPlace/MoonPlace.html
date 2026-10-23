@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Moon Place</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0f1226;--ink:#efe6d2;--dim:#b9ad96;--gold:#e7b85a;--panel:rgba(20,23,44,.92);--ho:.2}
+:root:not([data-theme="light"]){--bg:#0f1226}
+:root[data-theme="dark"]{--bg:#0f1226}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"IM Fell English",Georgia,"Noto Serif",serif;overflow:hidden;display:flex;flex-direction:column;padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0)}
+#top{position:fixed;top:env(safe-area-inset-top,0);left:env(safe-area-inset-left,0);z-index:30;display:flex;gap:6px;padding:8px;direction:ltr;align-items:center}
+#top button{font-size:18px;padding:4px 10px;border-radius:10px}
+#inv{display:flex;gap:6px;margin-left:6px;direction:ltr}
+.chip{border:1px solid var(--gold);color:var(--gold);padding:2px 10px;border-radius:14px;font-style:italic;font-size:15px;background:rgba(0,0,0,.35);cursor:pointer}
+.chip.on{background:var(--gold);color:#1a1630}
+#stage{flex:1;min-height:0;position:relative}
+svg{width:100%;height:100%;display:block}
+#cap{background:var(--panel);border-top:1px solid #3a3f5e;padding:8px 18px 10px;height:23%;min-height:72px;overflow:auto}
+#ttl{color:var(--gold);font-size:17px}
+#txt{margin:2px 0 0;font-size:17px;line-height:1.4}
+#txt.f{animation:f .6s}@keyframes f{from{opacity:0}}
+.hs{cursor:pointer}
+.halo{opacity:var(--ho)}
+.an .halo{animation:p 3.2s ease-in-out infinite}
+@keyframes p{50%{opacity:calc(var(--ho)*.3)}}
+#bl,#fg,#vg{position:absolute;inset:0;pointer-events:none;display:none}
+body.blood #bl{display:block;background:repeating-linear-gradient(90deg,transparent 0 7%,rgba(140,0,10,.0) 7% 7.3%)}
+#bl i{position:absolute;top:-40%;width:5px;height:40%;background:linear-gradient(#8a0010,#c0121f);border-radius:0 0 4px 4px;animation:dr 5s linear infinite}
+@keyframes dr{to{transform:translateY(300%)}}
+body.fog #fg{display:block;background:radial-gradient(ellipse at 30% 100%,rgba(200,210,230,.16),transparent 60%),radial-gradient(ellipse at 80% 90%,rgba(200,210,230,.12),transparent 55%)}
+body.vig #vg{display:block;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,10,.55))}
+.scr{position:fixed;inset:0;z-index:20;background:rgba(10,12,28,.97);display:flex;padding:7vh 6vw}
+.h{display:none!important}
+#menu{align-items:center;justify-content:space-between}
+#mt{font-size:min(10vw,13vh);line-height:1;margin:0;font-weight:400;max-width:50vw}
+#mm{width:min(38vh,34vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38% 35%,#fffbe8,#e9dfb8 55%,#b9ae8a);box-shadow:0 0 90px 24px rgba(240,230,180,.35);animation:gl 6s ease-in-out infinite}
+@keyframes gl{50%{box-shadow:0 0 130px 40px rgba(240,230,180,.5)}}
+#mb{position:fixed;bottom:6vh;left:0;right:0;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+button{font:inherit;font-size:19px;background:none;color:var(--gold);border:1px solid var(--gold);padding:8px 22px;border-radius:22px;cursor:pointer;background:rgba(0,0,0,.35)}
+button.on{background:var(--gold);color:#1a1630}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.pn{flex-direction:column;gap:14px;align-items:center;justify-content:center;text-align:center;overflow:auto}
+.pn h2{font-weight:400;margin:0;font-size:26px}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+#md{position:fixed;inset:0;z-index:25;background:rgba(5,6,16,.82);display:flex;align-items:center;justify-content:center;padding:14px}
+#md>div{background:#1b1f36;border:1px solid var(--gold);border-radius:14px;padding:18px 26px;max-width:min(560px,92vw);text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+#md p{margin:0;font-size:19px;line-height:1.5}
+.dl{display:flex;gap:20px}.dl div{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:34px}
+.dl button{padding:0 14px;font-size:16px}
+#rot{position:fixed;inset:0;z-index:50;background:#0a0c1c;display:none;align-items:center;justify-content:center;text-align:center;padding:30px;font-size:22px}
+@media (orientation:portrait){#rot{display:flex}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body>
+<div id="top"><button id="bf" aria-label="Fullscreen">⛶</button><button id="bm" aria-label="Menu">☰</button><div id="inv"></div></div>
+<div id="stage"><svg id="sv" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet" role="img"></svg><div id="bl"></div><div id="fg"></div><div id="vg"></div></div>
+<div id="cap"><b id="ttl"></b><p id="txt"></p></div>
+<div id="menu" class="scr"></div><div id="diff" class="scr pn h"></div><div id="set" class="scr pn h"></div>
+<div id="md" class="h"></div><div id="rot"></div>
+<script>
+const $=id=>document.getElementById(id);
+const T={
+en:{title:"Moon Place",start:"Start Game",cont:"Continue",set:"Settings",exit:"Exit",back:"Back",gfx:"Graphics",lang:"Language",pick:"Choose difficulty",d:["Easy","Normal","Hard","Extreme","Absolute","Planetary Absolute"],gl:["Flat","Soft","Painted","Misty","Radiant"],bye:"Goodbye. You can close this tab now.",rot:"Rotate your device to landscape",fs:"Fullscreen",close:"Close",ok:"Open",wrong:"Nothing happens. The dials click back.",empty:"Your pockets are empty.",lk:"Three dials",pg:"Page",
+n_y:"Grandmother’s yard",n_h:"The cottage",n_w:"The whispering wood",n_x:"The clearing",
+i_y:"Night has come, but the moon has not. Your grandmother said the sky keeps its promises. Tonight it didn’t.",i_h:"Dust, cold ashes, and a chest under the window. Everything is where she left it.",i_w:"Your lantern makes a small room of light, and the trees lean in to look.",i_x:"Seven stones stand around an old well. The air holds its breath.",
+it_lantern:"Lantern",it_key:"Iron key",it_petal:"Moon-petal",
+door_q:"A padlock with three dials holds the door. Which number did she never forget?",door_ok:"Click. The padlock falls open.",jr_t:"Her journal",jr1:"Day one. The moon didn’t come back. I keep looking up out of habit.",jr2:"Day nine. Whatever else I forget, I never forget my lucky number.",jr3:"Day ten. Four, one, seven. I keep it with the lock, where the moon can’t take it.",
+lan:"A brass lantern on its hook. The wick catches by itself and the yard turns gold.",cat1:"A grey cat watches you. An iron key hangs from its collar, and it lets you untie it, as if it had waited for you.",cat2:"The cat blinks slowly. The forest is that way.",path_d:"The forest is black as ink. You need a light.",
+chest_l:"A heavy chest, locked, with a keyhole the size of your thumb. Select an item below, then tap the chest.",chest_o:"The key turns. Inside lies a folded letter.",lt_t:"Her letter",lt1:"If the moon ever falls asleep, don’t shout at it.",lt2:"Take a petal from the glowing mushrooms in the wood, and let it fall into the well.",
+sh1:"Pale mushrooms glow like fallen moons. One lets go of a petal of light, humming softly.",sh2:"Only plain pale caps remain.",owl:"“The moon fell asleep in the old well,” the owl sighs. “Nothing in the village is bright enough to wake it. Bring a light that isn’t yours.”",
+st:"The stones are worn smooth. On the tallest, in a child’s letters: “Wake the moon gently. It dreams.”",well_l:"Chains bind the lid under a heavy padlock. Select an item, then tap the well.",well_o:"The chains fall away. Far below, something silver sleeps. Your lantern isn’t enough.",well_p:"The moon sleeps below you. You need a light that isn’t yours.",
+end:"You let the petal fall. For a breath, nothing. Then the moon rises, shaking sleep from itself, and climbs back to its place. In the village, one window glows.",endt:"The moon is home.",endp:"End of chapter one. More of the Moon Place is on the way."},
+id:{title:"Moon Place",start:"Mulai Game",cont:"Lanjutkan",set:"Pengaturan",exit:"Keluar",back:"Kembali",gfx:"Grafis",lang:"Bahasa",pick:"Pilih tingkat kesulitan",d:["Mudah","Normal","Sulit","Ekstrem","Absolut","Absolut Planet"],gl:["Datar","Lembut","Lukisan","Berkabut","Gemilang"],bye:"Sampai jumpa. Kamu boleh menutup tab ini.",rot:"Putar perangkatmu ke mode lanskap",fs:"Layar penuh",close:"Tutup",ok:"Buka",wrong:"Tidak terjadi apa-apa. Roda angkanya kembali berbunyi klik.",empty:"Sakumu kosong.",lk:"Tiga roda angka",pg:"Halaman",
+n_y:"Halaman Nenek",n_h:"Pondok",n_w:"Hutan berbisik",n_x:"Tanah lapang",
+i_y:"Malam tiba, tetapi bulan tidak. Nenek bilang langit selalu menepati janji. Malam ini tidak.",i_h:"Debu, abu dingin, dan sebuah peti di bawah jendela. Semuanya masih di tempat yang ia tinggalkan.",i_w:"Lenteramu membuat ruang kecil dari cahaya, dan pepohonan mencondong untuk melihat.",i_x:"Tujuh batu berdiri mengelilingi sumur tua. Udara menahan napas.",
+it_lantern:"Lentera",it_key:"Kunci besi",it_petal:"Kelopak bulan",
+door_q:"Gembok tiga angka mengunci pintu. Angka mana yang tak pernah ia lupakan?",door_ok:"Klik. Gembok terbuka.",jr_t:"Jurnalnya",jr1:"Hari pertama. Bulan tidak kembali. Aku masih saja menengadah karena kebiasaan.",jr2:"Hari kesembilan. Apa pun yang kulupa, aku tak pernah lupa angka keberuntunganku.",jr3:"Hari kesepuluh. Empat, satu, tujuh. Kusimpan bersama gembok, tempat bulan tak bisa mengambilnya.",
+lan:"Sebuah lentera kuningan di pengaitnya. Sumbunya menyala sendiri dan halaman berubah keemasan.",cat1:"Seekor kucing abu-abu menatapmu. Kunci besi tergantung di kalungnya, dan ia membiarkanmu melepasnya, seakan sudah menunggumu.",cat2:"Kucing itu berkedip pelan. Hutan ada di sana.",path_d:"Hutan itu hitam pekat. Kamu butuh cahaya.",
+chest_l:"Peti berat yang terkunci, dengan lubang kunci sebesar jempolmu. Pilih benda di bawah, lalu ketuk peti.",chest_o:"Kunci berputar. Di dalamnya ada surat terlipat.",lt_t:"Suratnya",lt1:"Jika bulan tertidur, jangan membentaknya.",lt2:"Petik kelopak dari jamur bercahaya di hutan, lalu jatuhkan ke dalam sumur.",
+sh1:"Jamur pucat bersinar seperti bulan yang jatuh. Satu melepas kelopak cahaya, berdengung pelan.",sh2:"Hanya tersisa tudung jamur biasa.",owl:"“Bulan tertidur di sumur tua,” desah burung hantu. “Tak ada di desa yang cukup terang untuk membangunkannya. Bawalah cahaya yang bukan milikmu.”",
+st:"Batu-batu itu halus karena usia. Di yang tertinggi, dengan huruf anak kecil: “Bangunkan bulan dengan lembut. Ia bermimpi.”",well_l:"Rantai mengikat tutupnya dengan gembok berat. Pilih benda, lalu ketuk sumur.",well_o:"Rantai terlepas. Jauh di bawah, sesuatu berwarna perak tertidur. Lenteramu tak cukup.",well_p:"Bulan tertidur di bawahmu. Kamu butuh cahaya yang bukan milikmu.",
+end:"Kamu menjatuhkan kelopak itu. Sesaat, tak ada apa-apa. Lalu bulan naik, mengibaskan kantuknya, dan kembali ke tempatnya. Di desa, satu jendela menyala.",endt:"Bulan sudah pulang.",endp:"Akhir bab satu. Bagian Moon Place selanjutnya segera datang."},
+ja:{title:"Moon Place",start:"ゲーム開始",cont:"続きから",set:"設定",exit:"終了",back:"戻る",gfx:"グラフィック",lang:"言語",pick:"難易度を選んでください",d:["イージー","ノーマル","ハード","エクストリーム","アブソリュート","惑星級アブソリュート"],gl:["フラット","やわらか","絵画風","霧","輝き"],bye:"さようなら。このタブを閉じても大丈夫です。",rot:"端末を横向きにしてください",fs:"全画面",close:"閉じる",ok:"開ける",wrong:"何も起きない。ダイヤルがカチリと戻る。",empty:"ポケットは空っぽだ。",lk:"三つのダイヤル",pg:"ページ",
+n_y:"祖母の庭",n_h:"小屋",n_w:"ささやきの森",n_x:"開けた場所",
+i_y:"夜が来たのに、月は来ない。祖母は空は約束を守ると言っていた。今夜は違った。",i_h:"ほこりと冷たい灰、窓の下の箱。すべて彼女が残したままだ。",i_w:"ランタンが小さな光の部屋をつくり、木々が覗き込むように身を寄せる。",i_x:"古い井戸のまわりに七つの石が立つ。空気が息を止めている。",
+it_lantern:"ランタン",it_key:"鉄の鍵",it_petal:"月の花びら",
+door_q:"三つのダイヤルの南京錠が扉を閉ざしている。彼女が決して忘れなかった数字は？",door_ok:"カチリ。南京錠が外れた。",jr_t:"彼女の日記",jr1:"一日目。月は戻らなかった。癖で、つい空を見上げてしまう。",jr2:"九日目。何を忘れても、私の幸運の数字だけは忘れない。",jr3:"十日目。四、一、七。月に奪われないよう、錠のそばにしまっておく。",
+lan:"フックに掛かった真鍮のランタン。芯がひとりでに灯り、庭が金色に染まる。",cat1:"灰色の猫がこちらを見ている。首輪に鉄の鍵が下がっていて、まるで待っていたかのように外させてくれた。",cat2:"猫はゆっくりまばたきした。森はあちらだ。",path_d:"森はインクのように真っ黒だ。明かりが必要だ。",
+chest_l:"鍵のかかった重い箱。親指ほどの鍵穴がある。下のアイテムを選んでから箱をタップしよう。",chest_o:"鍵が回った。中には折りたたまれた手紙。",lt_t:"彼女の手紙",lt1:"もし月が眠ってしまったら、怒鳴ってはいけません。",lt2:"森の光るキノコから花びらを一枚取り、井戸に落としなさい。",
+sh1:"淡いキノコが落ちた月のように光る。一つが光の花びらをこぼし、静かにうなった。",sh2:"ただの白いキノコしか残っていない。",owl:"「月は古い井戸で眠ってしまった」とフクロウはため息をつく。「村のどんな明かりでも起こせない。自分のものではない光を持ってこい」",
+st:"石は滑らかにすり減っている。いちばん高い石に子どもの字で「月をそっと起こして。月は夢を見ている」。",well_l:"重い南京錠で鎖が蓋を縛っている。アイテムを選んで井戸をタップしよう。",well_o:"鎖が落ちた。はるか下で銀色のものが眠っている。ランタンの光では足りない。",well_p:"月は足元で眠っている。自分のものではない光が必要だ。",
+end:"花びらを落とす。一瞬、何も起きない。やがて月が眠気を振り払って昇り、元の場所へ戻っていく。村では、ひとつの窓に明かりがともった。",endt:"月が帰ってきた。",endp:"第一章おわり。Moon Placeの続きをお楽しみに。"},
+zh:{title:"Moon Place",start:"开始游戏",cont:"继续游戏",set:"设置",exit:"退出",back:"返回",gfx:"画质",lang:"语言",pick:"选择难度",d:["简单","普通","困难","极限","绝对","行星级绝对"],gl:["扁平","柔和","绘画","薄雾","璀璨"],bye:"再见。你现在可以关闭此标签页了。",rot:"请将设备旋转为横屏",fs:"全屏",close:"关闭",ok:"打开",wrong:"什么也没发生。转盘咔哒一声弹了回去。",empty:"你的口袋空空如也。",lk:"三位转盘",pg:"第几页",
+n_y:"外婆的院子",n_h:"小屋",n_w:"低语森林",n_x:"空地",
+i_y:"夜晚来了，月亮却没有来。外婆说天空从不食言。今晚它食言了。",i_h:"灰尘、冰冷的炉灰，还有窗下的一口箱子。一切都还在她离开时的位置。",i_w:"提灯照出一小间光的屋子，树木都凑过来张望。",i_x:"七块石头围着一口古井。空气屏住了呼吸。",
+it_lantern:"提灯",it_key:"铁钥匙",it_petal:"月瓣",
+door_q:"一把三位转盘锁锁住了门。她永远不会忘记的是哪个数字？",door_ok:"咔哒。挂锁开了。",jr_t:"她的日记",jr1:"第一天。月亮没有回来。我习惯性地一直抬头看。",jr2:"第九天。不管忘了什么，我都不会忘记我的幸运数字。",jr3:"第十天。四、一、七。我把它和锁放在一起，月亮拿不走。",
+lan:"挂钩上有一盏黄铜提灯。灯芯自己亮了起来，院子染成金色。",cat1:"一只灰猫看着你。它的项圈上挂着一把铁钥匙，它让你解了下来，仿佛一直在等你。",cat2:"猫慢慢眨了眨眼。森林在那边。",path_d:"森林漆黑如墨。你需要一盏灯。",
+chest_l:"一口沉重的箱子，上了锁，钥匙孔有拇指那么大。先选择下方的物品，再点击箱子。",chest_o:"钥匙转动了。里面躺着一封折好的信。",lt_t:"她的信",lt1:"如果月亮睡着了，不要对它大声喊叫。",lt2:"从森林里发光的蘑菇上摘一片花瓣，让它落进井里。",
+sh1:"苍白的蘑菇像坠落的月亮一样发光。其中一朵落下一片光的花瓣，轻轻嗡鸣。",sh2:"只剩下普通的白蘑菇了。",owl:"“月亮在古井里睡着了，”猫头鹰叹息道，“村里没有任何东西亮得足以唤醒它。带一束不属于你的光来。”",
+st:"石头被磨得光滑。最高那块上刻着孩子的字迹：“轻轻唤醒月亮，它在做梦。”",well_l:"锁链和沉重的挂锁封住了井盖。先选择物品，再点击水井。",well_o:"锁链滑落。深处有银色的东西在沉睡。你的提灯不够亮。",well_p:"月亮在你脚下沉睡。你需要一束不属于你的光。",
+end:"你松开花瓣。一瞬间，什么也没有。然后月亮抖落睡意，缓缓升起，回到了它的位置。村子里，有一扇窗亮了起来。",endt:"月亮回家了。",endp:"第一章完。Moon Place 的后续即将到来。"},
+ar:{title:"Moon Place",start:"ابدأ اللعبة",cont:"متابعة",set:"الإعدادات",exit:"خروج",back:"رجوع",gfx:"الرسومات",lang:"اللغة",pick:"اختر مستوى الصعوبة",d:["سهل","عادي","صعب","متطرف","مطلق","مطلق كوكبي"],gl:["مسطح","ناعم","مرسوم","ضبابي","متألق"],bye:"إلى اللقاء. يمكنك إغلاق هذه الصفحة الآن.",rot:"أدر جهازك إلى الوضع الأفقي",fs:"ملء الشاشة",close:"إغلاق",ok:"فتح",wrong:"لا شيء يحدث. تعود الأقراص بنقرة.",empty:"جيوبك فارغة.",lk:"ثلاثة أقراص",pg:"صفحة",
+n_y:"فناء الجدة",n_h:"الكوخ",n_w:"الغابة الهامسة",n_x:"المساحة المفتوحة",
+i_y:"جاء الليل ولم يأتِ القمر. كانت جدتك تقول إن السماء تفي بوعودها. الليلة لم تفِ.",i_h:"غبار ورماد بارد وصندوق تحت النافذة. كل شيء حيث تركته.",i_w:"يصنع فانوسك غرفة صغيرة من الضوء، وتميل الأشجار لتنظر.",i_x:"سبعة أحجار تحيط ببئر قديمة. الهواء يحبس أنفاسه.",
+it_lantern:"فانوس",it_key:"مفتاح حديدي",it_petal:"بتلة القمر",
+door_q:"قفل بثلاثة أقراص يغلق الباب. ما الرقم الذي لم تنسه أبدًا؟",door_ok:"نقرة. انفتح القفل.",jr_t:"مذكراتها",jr1:"اليوم الأول. لم يعد القمر. ما زلت أنظر إلى الأعلى بحكم العادة.",jr2:"اليوم التاسع. مهما نسيت، لا أنسى رقمي المحظوظ أبدًا.",jr3:"اليوم العاشر. أربعة، واحد، سبعة. أحتفظ به مع القفل حيث لا يستطيع القمر أخذه.",
+lan:"فانوس نحاسي معلّق على خطافه. تشتعل الفتيلة من تلقاء نفسها ويصبح الفناء ذهبيًا.",cat1:"قطة رمادية تحدّق فيك. يتدلى مفتاح حديدي من طوقها، وتدعك تفكّه كأنها كانت تنتظرك.",cat2:"ترمش القطة ببطء. الغابة في ذلك الاتجاه.",path_d:"الغابة سوداء كالحبر. تحتاج إلى ضوء.",
+chest_l:"صندوق ثقيل مقفل بثقب مفتاح بحجم إبهامك. اختر شيئًا من الأسفل ثم المس الصندوق.",chest_o:"يدور المفتاح. في الداخل رسالة مطوية.",lt_t:"رسالتها",lt1:"إن نام القمر يومًا فلا تصرخ في وجهه.",lt2:"خذ بتلة من الفطر المتوهج في الغابة، ودعها تسقط في البئر.",
+sh1:"فطر شاحب يتوهج كأقمار ساقطة. تسقط إحداها بتلة من ضوء تُدندن بهدوء.",sh2:"لم يبقَ سوى الأغطية الشاحبة العادية.",owl:"«نام القمر في البئر القديمة،» تتنهد البومة. «لا شيء في القرية ساطع بما يكفي لإيقاظه. أحضر ضوءًا ليس ملكك.»",
+st:"الأحجار ملساء من القِدم. على أطولها بحروف طفل: «أيقظ القمر بلطف. إنه يحلم.»",well_l:"سلاسل تشد الغطاء بقفل ثقيل. اختر شيئًا ثم المس البئر.",well_o:"تسقط السلاسل. في الأعماق شيء فضي نائم. فانوسك لا يكفي.",well_p:"القمر نائم تحتك. تحتاج إلى ضوء ليس ملكك.",
+end:"تترك البتلة تسقط. للحظة لا شيء. ثم يصعد القمر نافضًا عنه النعاس، ويعود إلى مكانه. في القرية تضيء نافذة واحدة.",endt:"عاد القمر إلى بيته.",endp:"نهاية الفصل الأول. المزيد من Moon Place في الطريق."}};
+const LN={en:"English",id:"Indonesia",ja:"日本語",zh:"中文",ar:"العربية"};
+let L="en",G=3,D=1,st=null;const K="moonplace1";
+const t=k=>T[L][k]??T.en[k];
+const save=()=>{try{localStorage.setItem(K,JSON.stringify({L,G,D,st}))}catch(e){}};
+const load=()=>{try{return JSON.parse(localStorage.getItem(K))}catch(e){return null}};
+const fresh=()=>({sc:"y",inv:[],gone:{},f:{},sel:null,end:0});
+const has=i=>st.inv.includes(i);
+const R=(x,y,w,h,c)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`;
+const C=(x,y,r,c,o=1)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity="${o}"/>`;
+const E=(x,y,a,b,c)=>`<ellipse cx="${x}" cy="${y}" rx="${a}" ry="${b}" fill="${c}"/>`;
+const P=(d,c)=>`<path d="${d}" fill="${c}"/>`;
+const sign=(x,y,l)=>R(x,y-6,6,60,"#4a3a34")+`<polygon points="${x+3},${y} ${x+3+(l?-60:60)},${y} ${x+3+(l?-70:70)},${y+14} ${x+3+(l?-60:60)},${y+28} ${x+3},${y+28}" fill="#7a6350"/>`;
+const S={
+y:{sky:["#1b2147","#6a5a7c"],art:()=>P("M0 230 Q200 170 400 220 T800 200 V400 H0Z","#2b3552")+P("M0 290 Q400 260 800 295 V400 H0Z","#2e4a3e")+C(30,250,50,"#18262b")+C(80,215,38,"#18262b")+R(20,250,16,100,"#18262b")+R(700,190,6,110,"#4a3a34")+R(703,194,40,5,"#4a3a34")+R(520,300,90,8,"#5a4636")+R(530,308,6,30,"#5a4636")+R(594,308,6,30,"#5a4636"),
+ o:[
+ {id:"door",k:"lock",at:[307,258,52],art:()=>R(250,180,180,110,"#6b4f45")+`<polygon points="235,180 340,112 445,180" fill="#3d2f3f"/>`+R(380,210,34,30,"#2b2433")+R(285,225,46,65,"#3a2a2a")+(st.f.door?"":C(318,262,6,"#b79b5a")),
+  a:()=>st.f.door?go("h"):(lock("417",()=>{st.f.door=1;say(t("door_ok"));draw();save()}),t("door_q"))},
+ {id:"jr",k:"book",at:[565,288,34],art:()=>R(548,284,34,14,"#7a3b3b")+R(552,286,26,10,"#e8dcc0"),a:()=>(book("jr",3),"")},
+ {id:"lantern",k:"take",at:[730,214,30],art:()=>R(722,200,16,24,"#d9a441")+R(725,196,10,4,"#4a3a34")+R(726,204,8,16,"#fff1b0"),
+  a:()=>(st.inv.push("lantern"),st.gone.lantern=1,t("lan"))},
+ {id:"cat",k:"take",at:[470,338,36],art:()=>E(470,345,28,15,"#6f7488")+C(444,332,13,"#6f7488")+`<polygon points="434,324 437,310 445,322" fill="#6f7488"/><polygon points="446,322 454,310 456,325" fill="#6f7488"/>`+C(440,332,2.5,"#9fe39a")+C(449,332,2.5,"#9fe39a")+`<path d="M496 345 Q525 335 515 308" stroke="#6f7488" stroke-width="6" fill="none"/>`,
+  a:()=>has("key")?t("cat2"):(st.inv.push("key"),t("cat1"))},
+ {id:"path",k:"go",at:[70,340,42],art:()=>sign(60,320,0),a:()=>has("lantern")?go("w"):t("path_d")}]},
+h:{sky:["#2a2230","#3b2f35"],art:()=>R(0,0,800,400,"#3b2f35")+R(0,300,800,100,"#2a1f22")+R(300,80,120,110,"#14152b")+C(360,135,3,"#f5ecd0")+R(358,80,4,110,"#3b2f35")+R(300,133,120,4,"#3b2f35"),
+ o:[
+ {id:"chest",k:st=>st&&st.f.chest?"book":"lock",at:[540,320,56],art:()=>R(490,290,100,52,"#6b4a30")+R(490,282,100,14,"#85603c")+R(536,296,10,14,"#c9a24a"),
+  a:()=>st.f.chest?(book("lt",2),""):st.sel==="key"?(st.f.chest=1,draw(),t("chest_o")):t("chest_l")},
+ {id:"out",k:"go",at:[120,310,44],art:()=>R(80,230,70,120,"#201619")+C(138,300,4,"#b79b5a"),a:()=>go("y")}]},
+w:{sky:["#0e1626","#243b44"],art:()=>[90,300,520,720].map(x=>R(x,0,30,400,"#122018")).join("")+R(560,150,140,10,"#122018")+P("M0 310 Q400 280 800 315 V400 H0Z","#18302a"),
+ o:[
+ {id:"shroom",k:"take",at:[230,345,44],art:()=>C(230,345,38,"#8fe3d1",.15)+[[208,350],[232,340],[254,352]].map(a=>E(a[0],a[1],13,8,"#a8f0df")+R(a[0]-2,a[1],4,13,"#d8e7df")).join(""),
+  a:()=>has("petal")?t("sh2"):(st.inv.push("petal"),t("sh1"))},
+ {id:"owl",k:"look",at:[620,136,38],art:()=>E(620,140,17,23,"#8a7a62")+C(613,134,6,"#f3d77a")+C(627,134,6,"#f3d77a")+C(613,134,2,"#222")+C(627,134,2,"#222"),a:()=>t("owl")},
+ {id:"b",k:"go",at:[60,340,38],art:()=>sign(50,320,1),a:()=>go("y")},
+ {id:"n",k:"go",at:[740,340,38],art:()=>sign(730,320,0),a:()=>go("x")}]},
+x:{sky:["#0f1530","#3b3556"],art:()=>P("M0 290 Q400 255 800 295 V400 H0Z","#1f3030")+E(400,330,260,34,"#27403a"),
+ o:[
+ {id:"stones",k:"look",at:[170,290,50],art:()=>[[130,270,28,60],[170,255,26,76],[208,280,24,50]].map(a=>`<rect x="${a[0]}" y="${a[1]}" width="${a[2]}" height="${a[3]}" rx="10" fill="#4d4a5e"/>`).join(""),a:()=>t("st")},
+ {id:"well",k:"lock",at:[420,290,70],art:()=>R(360,255,120,70,"#5b5560")+E(420,255,60,15,"#14131d")+(st.f.open?E(420,255,46,10,"#cfd8e8")+C(420,245,18,"#e8eef9",.25):E(420,253,60,14,"#3a3038")+`<path d="M362 257 L478 250 M364 250 L476 259" stroke="#9a8f86" stroke-width="3"/>`+C(420,255,8,"#b79b5a")),
+  a:()=>{if(!st.f.open){if(st.sel==="key"){st.f.open=1;draw();return t("well_o")}return t("well_l")}
+   if(!has("petal"))return t("well_p");st.end=1;draw();setTimeout(fin,4500);return t("end")}},
+ {id:"b",k:"go",at:[60,340,38],art:()=>sign(50,320,1),a:()=>go("w")}]}};
+const HC={go:"#9ad0ff",lock:"#ff9a9a",book:"#9affb0",take:"#f3d98a",look:"#f3d98a"};
+function go(s){st.sc=s;draw();say(t("i_"+s));save()}
+function say(x){if(!x)return;const e=$("txt");e.textContent=x;e.classList.remove("f");void e.offsetWidth;e.classList.add("f")}
+function draw(){const s=S[st.sc],dk=D>=3,red=D===5;
+const sk=red?["#2a0610","#7a1620"]:s.sky;
+const moon=st.end?C(640,70,36,"#f4efd8")+C(640,70,60,"#f4efd8",.18):dk?C(640,70,34,"#14121a")+`<circle cx="640" cy="70" r="34" fill="none" stroke="${red?"#c0121f":"#5a2a3a"}" stroke-width="2"/>`:`<circle cx="640" cy="70" r="34" fill="none" stroke="#8f89a8" stroke-width="1.5" stroke-dasharray="3 6"/>`;
+const stars=G>=2?[[40,40],[120,70],[250,30],[350,90],[480,40],[560,110],[760,150],[700,40]].map(a=>C(a[0],a[1],1.5,"#f5ecd0",.8)).join(""):"";
+const os=s.o.filter(o=>!st.gone[o.id]).map(o=>{const k=typeof o.k==="function"?o.k(st):o.k;return `<g class="hs" data-id="${o.id}"><circle class="halo" cx="${o.at[0]}" cy="${o.at[1]}" r="${o.at[2]}" fill="${HC[k]}"/>${o.art()}</g>`}).join("");
+$("sv").innerHTML=`<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sk[0]}"/><stop offset="1" stop-color="${sk[1]}"/></linearGradient><filter id="pt"><feTurbulence type="fractalNoise" baseFrequency=".02" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="6"/></filter></defs><rect width="800" height="400" fill="url(#g)"/>${stars}${moon}<g ${G>=3?'filter="url(#pt)"':""}>${s.art()}${os}</g>`;
+$("ttl").textContent=t("n_"+st.sc);
+$("inv").innerHTML=st.inv.length?st.inv.map(i=>`<span class="chip ${st.sel===i?"on":""}" data-it="${i}">${t("it_"+i)}</span>`).join(""):`<span style="color:var(--dim);font-size:14px">${t("empty")}</span>`;
+const b=document.body.classList;b.toggle("blood",D>=3);b.toggle("fog",G>=4);b.toggle("vig",G>=5);b.toggle("an",G>=2);
+document.documentElement.style.setProperty("--ho",D===0?".3":D===1?".16":"0");}
+$("sv").addEventListener("click",e=>{const g=e.target.closest(".hs");if(!g)return;const o=S[st.sc].o.find(x=>x.id===g.dataset.id);const r=o.a();draw();say(r);save()});
+$("inv").addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c||!c.dataset.it)return;st.sel=st.sel===c.dataset.it?null:c.dataset.it;draw()});
+function modal(h){$("md").innerHTML=`<div>${h}</div>`;$("md").classList.remove("h")}
+const closeM=()=>$("md").classList.add("h");
+function lock(code,ok){let v=[0,0,0];const r=()=>{modal(`<b>${t("lk")}</b><div class="dl">${v.map((n,i)=>`<div><button data-d="${i}:1">▲</button>${n}<button data-d="${i}:-1">▼</button></div>`).join("")}</div><div class="row"><button data-m="try">${t("ok")}</button><button data-m="x">${t("close")}</button></div><p id="lm" style="font-size:15px;color:var(--dim)"></p>`)};
+window._l={v,code,ok,r};r()}
+function book(k,n){let i=0;const r=()=>modal(`<b>${t(k+"_t")}</b><p>${t(k+(i+1))}</p><div class="row"><button data-b="-1">‹</button><span>${t("pg")} ${i+1}/${n}</span><button data-b="1">›</button><button data-m="x">${t("close")}</button></div>`);window._b={r,n,mv:d=>{i=Math.max(0,Math.min(n-1,i+d));r()}};r()}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-d],[data-m],[data-b],[data-a]");if(!b)return;
+if(b.dataset.d){const[i,d]=b.dataset.d.split(":");const l=window._l;l.v[i]=(l.v[i]+ +d+10)%10;l.r();return}
+if(b.dataset.b){window._b.mv(+b.dataset.b);return}
+if(b.dataset.m==="x"){closeM();return}
+if(b.dataset.m==="try"){const l=window._l;if(l.v.join("")===l.code){closeM();l.ok()}else{l.r();$("lm").textContent=t("wrong")}return}
+const a=b.dataset.a;
+if(a==="start")sc("diff");else if(a==="cont"){const s=load();if(s&&s.st){st=s.st;D=s.D;go2()}}
+else if(a==="set")sc("set");else if(a==="back")sc("menu");
+else if(a==="exit"){save();window.close();setTimeout(()=>{document.body.innerHTML=`<div style="margin:auto;font-size:24px;text-align:center;padding:30px">${t("bye")}</div>`},300)}
+else if(a.startsWith("d")){D=+a.slice(1);st=fresh();go2()}
+else if(a.startsWith("g")){G=+a.slice(1);ui();sc("set");save()}
+else if(a.startsWith("l")){L=a.slice(1);lang();sc("set");save()}});
+function sc(n){["menu","diff","set"].forEach(x=>$(x).classList.toggle("h",x!==n))}
+function go2(){sc("none");draw();say(t("i_"+st.sc));save()}
+function fin(){modal(`<b style="font-size:24px">${t("endt")}</b><p>${t("endp")}</p><button data-m="x" onclick="sc('menu')">${t("back")}</button>`)}
+function ui(){const sv=load();
+$("menu").innerHTML=`<h1 id="mt">${t("title")}</h1><div id="mm"></div><div id="mb">${sv&&sv.st?`<button data-a="cont">${t("cont")}</button>`:""}<button data-a="start">${t("start")}</button><button data-a="set">${t("set")}</button><button data-a="exit">${t("exit")}</button></div>`;
+$("diff").innerHTML=`<h2>${t("pick")}</h2><div class="row">${t("d").map((n,i)=>`<button data-a="d${i}">${n}</button>`).join("")}</div><button data-a="back">${t("back")}</button>`;
+$("set").innerHTML=`<h2>${t("gfx")}</h2><div class="row">${t("gl").map((n,i)=>`<button class="${G===i+1?"on":""}" data-a="g${i+1}">${i+1} · ${n}</button>`).join("")}</div><h2>${t("lang")}</h2><div class="row">${Object.keys(LN).map(k=>`<button class="${L===k?"on":""}" data-a="l${k}">${LN[k]}</button>`).join("")}</div><button data-a="back">${t("back")}</button>`;
+$("rot").textContent=t("rot");$("bf").title=t("fs")}
+function lang(){const r=L==="ar";document.documentElement.lang=L;document.documentElement.dir=r?"rtl":"ltr";$("sv").style.transform=r?"scaleX(-1)":"";ui();if(st){draw()}}
+$("bf").onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else{await document.documentElement.requestFullscreen();try{await screen.orientation.lock("landscape")}catch(e){}}}catch(e){}};
+$("bm").onclick=()=>{save();ui();sc("menu")};
+$("bl").innerHTML=[8,19,31,44,57,70,84,93].map((x,i)=>`<i style="left:${x}%;animation-delay:-${i*.9}s;animation-duration:${4+i%3}s"></i>`).join("");
+addEventListener("pagehide",save);document.addEventListener("visibilitychange",()=>{if(document.hidden)save()});
+const s0=load();if(s0){L=s0.L||"en";G=s0.G||3;D=s0.D??1;st=s0.st}
+if(!st)st=fresh();draw();lang();sc("menu");
+</script></body></html>
